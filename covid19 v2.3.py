@@ -444,11 +444,11 @@ def to_print (list_df):
 #Creation des DB
 current = os.path.dirname(os.path.realpath(__file__))
 
-#list_df = import_df_from_I()
-list_df = import_df_from_xlsx(current)
+list_df = import_df_from_I() #Import depuis internet
+#list_df = import_df_from_xlsx(current) #Import depuis ordinateur 
 save_df (list_df, current)
 
-list_df= clean_up(list_df)
+list_df= clean_up(list_df) #/!\ Ajouter la dernière valeur pour la France
 list_df = ajusted_values(list_df) #list_df[0] to list_df[2]
 
 delta_df11 = delta_df(list_df[0])
