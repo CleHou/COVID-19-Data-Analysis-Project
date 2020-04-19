@@ -443,8 +443,8 @@ def to_print (list_df):
 #Creation des DB
 current = os.path.dirname(os.path.realpath(__file__))
 
-#list_df = import_df_from_I()
-list_df = import_df_from_xlsx(current)
+list_df = import_df_from_I()
+#list_df = import_df_from_xlsx(current)
 save_df (list_df, current)
 
 list_df= clean_up(list_df)
