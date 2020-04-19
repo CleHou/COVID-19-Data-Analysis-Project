@@ -37,9 +37,9 @@ def save_df (list_df, current):
     creation_folder(['/00 - Data'])
     
     df1, df2, df3 = list_df
-    df1.to_csv(current + '/00 - Data/confirmed.csv', index=False)
-    df2.to_csv(current + '/00 - Data/death.csv', index=False)
-    df3.to_csv(current + '/00 - Data/recovered.csv', index=False)
+    df1.to_csv(os.path.normcase(current + '/00 - Data/confirmed.csv'), index=False)
+    df2.to_csv(os.path.normcase(current + '/00 - Data/death.csv'    ), index=False)
+    df3.to_csv(os.path.normcase(current + '/00 - Data/recovered.csv'), index=False)
     
     return print('Saved')
 
@@ -64,7 +64,7 @@ def clean_up (list_df):
 
 def ajusted_values(list_df):
     to_replace = numpy.array([65202, 69500, 71412, 75343, 79163, 83057, 87366, 91738, 94863, 
-                  96482, 99172, 104481, 107318, 109978, 109252], dtype=float)
+                  96482, 99172, 104481, 107318, 109978, 109252, 111821], dtype=float)
     
     for k in range(len(list_df[0].columns)-72):
         list_df[0].iloc[list_df[0].index.get_loc('France'), 72+k]=to_replace[k]
@@ -108,7 +108,7 @@ def growth_rate (df):
     
     for k in range(len(list_date)-1):
         grate.loc[:,list_date[k+1]] = df.loc[:,list_date[k+1]] / df.loc[:,list_date[k]]
-        
+    
     grate = grate.replace([numpy.inf, -numpy.inf, numpy.NaN], 0)  
     
     for date in list_date:
@@ -308,10 +308,10 @@ def plot (list_df, lim_date, lim_reg_cases, lim_reg_death, intv, list_country, c
         
         fig1.suptitle(f'Covid-19 situation on {long_date} \n1/2', fontsize=16)
         fig2.suptitle(f'Covid-19 situation on {long_date} \n', fontsize=16)
-        fig2.savefig(f'01 - Graph/Daily/{month}/{short_date}.pdf', format='pdf')
+        fig2.savefig(os.path.normcase(f'01 - Graph/Daily/{month}/{short_date}.pdf'), format='pdf')
         
         """
-        pdf = matplotlib.backends.backend_pdf.PdfPages(f'01 - Graph/Daily/{month}/{short_date}.pdf')
+        pdf = matplotlib.backends.backend_pdf.PdfPages(os.path.normcase(f'01 - Graph/Daily/{month}/{short_date}.pdf'))
         pdf.savefig(fig1)
         pdf.savefig(fig2)
         pdf.close()
@@ -324,9 +324,9 @@ def plot (list_df, lim_date, lim_reg_cases, lim_reg_death, intv, list_country, c
             fig1.suptitle('Covid-19 situation worldwide \n1/2', fontsize=16)
             fig2.suptitle('Covid-19 situation worldwide \n', fontsize=16)
             
-            fig2.savefig(f'01 - Graph/World/{month}/{short_date}_World.pdf', format='pdf')
+            fig2.savefig(os.path.normcase(f'01 - Graph/World/{month}/{short_date}_World.pdf'), format='pdf')
             """
-            pdf = matplotlib.backends.backend_pdf.PdfPages(f'01 - Graph/World/{month}/{short_date}_World.pdf')
+            pdf = matplotlib.backends.backend_pdf.PdfPages(os.path.normcase(f'01 - Graph/World/{month}/{short_date}_World.pdf'))
             pdf.savefig(fig1)
             pdf.savefig(fig2)
             pdf.close()
@@ -338,7 +338,7 @@ def plot (list_df, lim_date, lim_reg_cases, lim_reg_death, intv, list_country, c
             fig1.suptitle(f'Covid-19 situation for {list_country[-1]} \n1/2', fontsize=16)
             fig2.suptitle('Covid-19 situation for {list_country[-1]} \n', fontsize=16)
             
-            fig2.savefig(f'01 - Graph/Country/{list_country[-1]}.pdf', format='pdf')
+            fig2.savefig(os.path.normcase(f'01 - Graph/Country/{list_country[-1]}.pdf'), format='pdf')
     
     plt.show()
             
@@ -417,10 +417,9 @@ def plot_stack (list_df, lim_date, intv, list_country, colors):
     plt.subplots_adjust(right=0.9)
     
     fig.suptitle(f'Covid-19 situation on {long_date}', fontsize=16)
-    plt.show()
-    
+  
     creation_folder ([f'/01 - Graph/Stack/{month}'])
-    plt.savefig(f'01 - Graph/Stack/{month}/{short_date}.pdf', format='pdf')
+    plt.savefig(os.path.normcase(f'01 - Graph/Stack/{month}/{short_date}.pdf'), format='pdf')
     
     
 def to_print (list_df):
@@ -444,11 +443,11 @@ def to_print (list_df):
 #Creation des DB
 current = os.path.dirname(os.path.realpath(__file__))
 
-list_df = import_df_from_I() #Import depuis internet
-#list_df = import_df_from_xlsx(current) #Import depuis ordinateur 
+#list_df = import_df_from_I()
+list_df = import_df_from_xlsx(current)
 save_df (list_df, current)
 
-list_df= clean_up(list_df) #/!\ Ajouter la dernière valeur pour la France
+list_df= clean_up(list_df)
 list_df = ajusted_values(list_df) #list_df[0] to list_df[2]
 
 delta_df11 = delta_df(list_df[0])
