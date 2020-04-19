@@ -63,8 +63,8 @@ def clean_up (list_df):
     return list_return
 
 def ajusted_values(list_df):
-    to_replace = numpy.array([65202, 69500, 71412, 75343, 79163, 83057, 87366, 91738, 94863, 
-                  96482, 99172, 104481, 107318, 109978, 109252, 111821], dtype=float)
+    to_replace = numpy.array([65202, 68605, 70478, 74390, 78167, 82048, 86334, 90676, 93790, 
+                  95403, 98076, 103373, 106206, 108847, 109252, 111821], dtype=float)
     
     for k in range(len(list_df[0].columns)-72):
         list_df[0].iloc[list_df[0].index.get_loc('France'), 72+k]=to_replace[k]
