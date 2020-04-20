@@ -64,7 +64,7 @@ def clean_up (list_df):
 
 def ajusted_values(list_df):
     to_replace = numpy.array([65202, 68605, 70478, 74390, 78167, 82048, 86334, 90676, 93790, 
-                  95403, 98076, 103373, 106206, 108847, 109252, 111821], dtype=float)
+                  95403, 98076, 103373, 106206, 108847, 109252, 111821, 112606], dtype=float)
     
     for k in range(len(list_df[0].columns)-72):
         list_df[0].iloc[list_df[0].index.get_loc('France'), 72+k]=to_replace[k]
@@ -309,7 +309,9 @@ def plot (list_df, lim_date, lim_reg_cases, lim_reg_death, intv, list_country, c
         fig1.suptitle(f'Covid-19 situation on {long_date} \n1/2', fontsize=16)
         fig2.suptitle(f'Covid-19 situation on {long_date} \n', fontsize=16)
         fig2.savefig(os.path.normcase(f'01 - Graph/Daily/{month}/{short_date}.pdf'), format='pdf')
-        
+        creation_folder ([f'/01 - Graph/Previews'])
+        fig2.savefig(os.path.normcase(f'01 - Graph/Previews/{short_date}_preview.png'), format='png', dpi=300) #Preview for publishing
+    
         """
         pdf = matplotlib.backends.backend_pdf.PdfPages(os.path.normcase(f'01 - Graph/Daily/{month}/{short_date}.pdf'))
         pdf.savefig(fig1)
@@ -324,7 +326,11 @@ def plot (list_df, lim_date, lim_reg_cases, lim_reg_death, intv, list_country, c
             fig1.suptitle('Covid-19 situation worldwide \n1/2', fontsize=16)
             fig2.suptitle('Covid-19 situation worldwide \n', fontsize=16)
             
+            
             fig2.savefig(os.path.normcase(f'01 - Graph/World/{month}/{short_date}_World.pdf'), format='pdf')
+            creation_folder ([f'/01 - Graph/Previews'])
+            fig2.savefig(os.path.normcase(f'01 - Graph/Previews/{short_date}_preview_world.png'), format='png', dpi=300) #Preview for publishing
+    
             """
             pdf = matplotlib.backends.backend_pdf.PdfPages(os.path.normcase(f'01 - Graph/World/{month}/{short_date}_World.pdf'))
             pdf.savefig(fig1)
@@ -365,32 +371,6 @@ def graph_stack (new_df, lim_date, intv, colors, type_graph, incrementxy, fig, a
     axs.set_ylabel(f'Number of {type_graph}')
     axs.set_xlabel('Date')
     
-   
-    
-def graph_death_stack (new_df12, list_date, start_index, end_index, list_colors, fig, axs, intv):
-    list_val = []
-    list_country_full = list(new_df12.index)
-    
-    for country in list_country_full:
-        list_val.append(list(new_df12.loc[country])[2 + start_index:end_index])
-        
-    prev_val = 0
-    for L in list_val:
-        axs[1].annotate('+'+str(round(L[-1])), xy=(list_date[-1], L[-1]+prev_val), xytext = (list_date[-17], L[-1]+prev_val-500),
-           arrowprops=dict(facecolor='black', arrowstyle="->"))
-        prev_val += L[-1]
-    
-    axs[1].grid(alpha=0.4)
-    axs[1].stackplot(list_date, list_val, labels = list_country_full, colors = list_colors[:len(list_country_full)])
-    axs[1].xaxis.set_major_formatter(dates.DateFormatter('%d/%m/%y'))
-    axs[1].xaxis.set_major_locator(dates.DayLocator(interval=intv))
-    fig.autofmt_xdate()
-    
-    axs[1].set_title ('Number of death vs date')
-    axs[1].set_ylabel('Number of cases')
-    axs[1].set_xlabel('Date')
-    
-    
     
 def plot_stack (list_df, lim_date, intv, list_country, colors):
     long_date = (list_df[0].columns)[lim_date[-1]].strftime("%d %B, %Y")
@@ -419,15 +399,17 @@ def plot_stack (list_df, lim_date, intv, list_country, colors):
     fig.suptitle(f'Covid-19 situation on {long_date}', fontsize=16)
   
     creation_folder ([f'/01 - Graph/Stack/{month}'])
-    plt.savefig(os.path.normcase(f'01 - Graph/Stack/{month}/{short_date}.pdf'), format='pdf')
+    fig.savefig(os.path.normcase(f'01 - Graph/Stack/{month}/{short_date}_stack.pdf'), format='pdf')
+    creation_folder ([f'/01 - Graph/Previews'])
+    fig.savefig(os.path.normcase(f'01 - Graph/Previews/{short_date}_preview_stack.png'), format='png', dpi=300) #Preview for publishing
     
     
 def to_print (list_df):
     
     for country in list_country:
         print('\n'+country)
-        mod_list_df = [list_df[0], list_df[3], list_df[1], list_df[4], list_df[5], list_df[6]]
-        list_index = ['Cases', 'Delta Cases', 'Death',  'Delta Death' , 'Fatality rate', 'Growth rate averaged']
+        mod_list_df = [list_df[0], list_df[3], list_df[1], list_df[4], list_df[5], list_df[6], list_df[7]]
+        list_index = ['Cases', 'Delta Cases', 'Death',  'Delta Death' , 'Fatality rate', 'Growth rate averaged', 'Growth rate']
         list_col = [(list_df[0].columns)[x].strftime("%d-%m-%Y") for x in range(-3, 0, 1)]
         list_concat = []
         
@@ -443,8 +425,8 @@ def to_print (list_df):
 #Creation des DB
 current = os.path.dirname(os.path.realpath(__file__))
 
-list_df = import_df_from_I()
-#list_df = import_df_from_xlsx(current)
+#list_df = import_df_from_I()
+list_df = import_df_from_xlsx(current)
 save_df (list_df, current)
 
 list_df= clean_up(list_df)
@@ -462,8 +444,9 @@ frate = fatality_rate (list_df)
 list_df.append(frate) #list_df[5]
 
 grate = growth_rate (list_df[0])
-grate = smoothed_fun (grate, 2)
-list_df.append(grate) #list_df[6]
+grate2 = smoothed_fun (grate, 2)
+list_df.append(grate2) #list_df[6]
+list_df.append(grate)
 
 
 colors = ['#3E86E8', '#D45050', '#58C446', '#9A46C4', '#F0D735', '#6BB482', '#013BD2', '#F08328', '#04979C' ,"#00000"]
@@ -474,7 +457,7 @@ len_tot = len(list(list_df[0].columns.values))-1
 lim_date = [50, len_tot]
 lim_reg_cases = [22, len_tot, 22, 24] 
 lim_reg_death = [len_tot, len_tot,24, len_tot]
-intv = 2
+intv = 3
 list_country = ['France', 'US', 'Italy', 'Germany']
 
 plot (list_df, lim_date, lim_reg_cases, lim_reg_death, intv, list_country, colors, regression=False)
@@ -482,17 +465,17 @@ to_print (list_df)
 
 #For a list of country Stacked graph
 lim_date = [1, len_tot]
-intv = 5
+intv = 7
 list_country = ['China', 'Italy', 'US', 'Spain', 'France']
 
 plot_stack (list_df, lim_date, intv, list_country, colors)
 
 
 #One Country or worldwide
-im_date = [1, len_tot]
+lim_date = [1, len_tot]
 lim_reg_cases = [15]
 lim_reg_death = [24] 
-intv = 5
+intv = 7
 list_country = ['World']
 
 plot (list_df, lim_date, lim_reg_cases, lim_reg_death, intv, list_country, colors, regression=False)
