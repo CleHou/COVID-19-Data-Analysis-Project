@@ -64,7 +64,8 @@ def clean_up (list_df):
 
 def ajusted_values(list_df):
     to_replace = numpy.array([65202, 68605, 70478, 74390, 78167, 82048, 86334, 90676, 93790, 
-                  95403, 98076, 103373, 106206, 108847, 109252, 111821, 112606], dtype=float)
+                  95403, 98076, 103373, 106206, 108847, 109252, 111821, 112606,
+                  114657], dtype=float)
     
     for k in range(len(list_df[0].columns)-72):
         list_df[0].iloc[list_df[0].index.get_loc('France'), 72+k]=to_replace[k]
@@ -425,8 +426,8 @@ def to_print (list_df):
 #Creation des DB
 current = os.path.dirname(os.path.realpath(__file__))
 
-#list_df = import_df_from_I()
-list_df = import_df_from_xlsx(current)
+list_df = import_df_from_I()
+#list_df = import_df_from_xlsx(current)
 save_df (list_df, current)
 
 list_df= clean_up(list_df)
