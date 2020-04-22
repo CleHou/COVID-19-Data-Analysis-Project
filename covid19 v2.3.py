@@ -62,11 +62,7 @@ def clean_up (list_df):
 
     return list_return
 
-def ajusted_values(list_df):
-    to_replace = numpy.array([65202, 68605, 70478, 74390, 78167, 82048, 86334, 90676, 93790, 
-                  95403, 98076, 103373, 106206, 108847, 109252, 111821, 112606,
-                  114657], dtype=float)
-    
+def ajusted_values(list_df, to_replace):
     for k in range(len(list_df[0].columns)-72):
         list_df[0].iloc[list_df[0].index.get_loc('France'), 72+k]=to_replace[k]
         
@@ -426,12 +422,16 @@ def to_print (list_df):
 #Creation des DB
 current = os.path.dirname(os.path.realpath(__file__))
 
+to_replace = numpy.array([65202, 68605, 70478, 74390, 78167, 82048, 86334, 90676, 93790, 
+                  95403, 98076, 103373, 106206, 108847, 109252, 111821, 112606,
+                  114657, 117324], dtype=float)
+    
 list_df = import_df_from_I()
 #list_df = import_df_from_xlsx(current)
 save_df (list_df, current)
 
 list_df= clean_up(list_df)
-list_df = ajusted_values(list_df) #list_df[0] to list_df[2]
+list_df = ajusted_values(list_df, to_replace) #list_df[0] to list_df[2]
 
 delta_df11 = delta_df(list_df[0])
 delta_df11 = smoothed_fun (delta_df11, 2)
@@ -451,6 +451,7 @@ list_df.append(grate)
 
 
 colors = ['#3E86E8', '#D45050', '#58C446', '#9A46C4', '#F0D735', '#6BB482', '#013BD2', '#F08328', '#04979C' ,"#00000"]
+
 
 #For a list of country 4 graphs
 len_tot = len(list(list_df[0].columns.values))-1
@@ -482,6 +483,5 @@ list_country = ['World']
 plot (list_df, lim_date, lim_reg_cases, lim_reg_death, intv, list_country, colors, regression=False)
 to_print (list_df)
 
-#print (list(df11.index)) #Liste des pays
-
+#print (list(list_df[0].index)) #Liste des pays
 
