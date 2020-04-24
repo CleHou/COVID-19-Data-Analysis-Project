@@ -16,14 +16,16 @@ from sklearn.metrics import r2_score
 import os
 import matplotlib.lines as mlines
 import matplotlib.backends.backend_pdf
+import matplotlib.image as image
 
 def import_df_from_I ():
     partial_link = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_'
     df1 = pandas.read_csv(partial_link+ 'confirmed_global.csv')
     df2 = pandas.read_csv(partial_link+ 'deaths_global.csv')  
     df3 = pandas.read_csv(partial_link+ 'recovered_global.csv')
-
-    return df1, df2, df3
+    to_replace = pandas.read_csv('https://raw.githubusercontent.com/CleHou/COVID19/master/Graph/France_data.csv')
+    
+    return [df1, df2, df3], to_replace
 
 def creation_folder (paths):
     current = os.path.dirname(os.path.realpath(__file__))
@@ -33,22 +35,24 @@ def creation_folder (paths):
         if os.path.exists(directory) == False:
             os.makedirs(directory)
 
-def save_df (list_df, current):
+def save_df (list_df, to_replace, current):
     creation_folder(['/00 - Data'])
     
     df1, df2, df3 = list_df
     df1.to_csv(os.path.normcase(current + '/00 - Data/confirmed.csv'), index=False)
     df2.to_csv(os.path.normcase(current + '/00 - Data/death.csv'    ), index=False)
     df3.to_csv(os.path.normcase(current + '/00 - Data/recovered.csv'), index=False)
+    to_replace.to_csv(os.path.normcase(current + '/00 - Data/Revised_France_Data.csv'), index=False, index_label="Date")
     
     return print('Saved')
 
 def import_df_from_xlsx (current):
     df1 = pandas.read_csv(current + '/00 - Data/confirmed.csv')
     df2 = pandas.read_csv(current + '/00 - Data/death.csv')  
-    df3 = pandas.read_csv(current + '/00 - Data/recovered.csv')  
+    df3 = pandas.read_csv(current + '/00 - Data/recovered.csv')
+    to_replace = pandas.read_csv(current + '/00 - Data/Revised_France_Data.csv')
     
-    return df1, df2, df3
+    return [df1, df2, df3], to_replace
 
 def clean_up (list_df):
     list_return = []
@@ -63,9 +67,13 @@ def clean_up (list_df):
     return list_return
 
 def ajusted_values(list_df, to_replace):
-    for k in range(len(list_df[0].columns)-72):
-        list_df[0].iloc[list_df[0].index.get_loc('France'), 72+k]=to_replace[k]
-        
+    to_replace = to_replace.set_index('Date')
+    to_replace.loc[:,'Cases'] = pandas.to_numeric(to_replace.loc[:,'Cases'], downcast='float')
+    to_replace.index = pandas.to_datetime(to_replace.index)
+   
+    for index in to_replace.index:
+        list_df[0].loc['France', index] = to_replace.loc[index, 'Cases']
+
     return list_df
 
 def smoothed_fun (df, nb_val=2): #Moving average smoothing on the 2 previous values
@@ -300,11 +308,15 @@ def plot (list_df, lim_date, lim_reg_cases, lim_reg_death, intv, list_country, c
     fig2.subplots_adjust(right=0.87)
     
     
+    im = image.imread('https://github.com/CleHou/COVID19/raw/master/Logo_200px.png')
+    fig1.figimage(im, 30, 20, zorder=3)
+    fig2.figimage(im, 30, 30, zorder=3)
+    
     if len(list_country) >1:
         creation_folder ([f'/01 - Graph/Daily/{month}'])
         
-        fig1.suptitle(f'Covid-19 situation on {long_date} \n1/2', fontsize=16)
-        fig2.suptitle(f'Covid-19 situation on {long_date} \n', fontsize=16)
+        fig1.suptitle(f'Covid-19 situation on {long_date}', fontsize=16)
+        fig2.suptitle(f'Covid-19 situation on {long_date}', fontsize=16)
         fig2.savefig(os.path.normcase(f'01 - Graph/Daily/{month}/{short_date}.pdf'), format='pdf')
         creation_folder ([f'/01 - Graph/Previews'])
         fig2.savefig(os.path.normcase(f'01 - Graph/Previews/{short_date}_preview.png'), format='png', dpi=300) #Preview for publishing
@@ -320,14 +332,14 @@ def plot (list_df, lim_date, lim_reg_cases, lim_reg_death, intv, list_country, c
         if list_country==['World']:
             creation_folder ([f'/01 - Graph/World/{month}'])
             
-            fig1.suptitle('Covid-19 situation worldwide \n1/2', fontsize=16)
-            fig2.suptitle('Covid-19 situation worldwide \n', fontsize=16)
+            fig1.suptitle('Covid-19 situation worldwide', fontsize=16)
+            fig2.suptitle('Covid-19 situation worldwide', fontsize=16)
             
             
             fig2.savefig(os.path.normcase(f'01 - Graph/World/{month}/{short_date}_World.pdf'), format='pdf')
             creation_folder ([f'/01 - Graph/Previews'])
             fig2.savefig(os.path.normcase(f'01 - Graph/Previews/{short_date}_preview_world.png'), format='png', dpi=300) #Preview for publishing
-    
+        
             """
             pdf = matplotlib.backends.backend_pdf.PdfPages(os.path.normcase(f'01 - Graph/World/{month}/{short_date}_World.pdf'))
             pdf.savefig(fig1)
@@ -338,8 +350,8 @@ def plot (list_df, lim_date, lim_reg_cases, lim_reg_death, intv, list_country, c
         else:
             creation_folder ([f'/01 - Graph/Country/'])
             
-            fig1.suptitle(f'Covid-19 situation for {list_country[-1]} \n1/2', fontsize=16)
-            fig2.suptitle('Covid-19 situation for {list_country[-1]} \n', fontsize=16)
+            fig1.suptitle(f'Covid-19 situation for {list_country[-1]}', fontsize=16)
+            fig2.suptitle('Covid-19 situation for {list_country[-1]}', fontsize=16)
             
             fig2.savefig(os.path.normcase(f'01 - Graph/Country/{list_country[-1]}.pdf'), format='pdf')
     
@@ -394,6 +406,9 @@ def plot_stack (list_df, lim_date, intv, list_country, colors):
     plt.subplots_adjust(right=0.9)
     
     fig.suptitle(f'Covid-19 situation on {long_date}', fontsize=16)
+    
+    im = image.imread('https://github.com/CleHou/COVID19/raw/master/Logo_200px.png')
+    fig.figimage(im, 30, 20, zorder=3)
   
     creation_folder ([f'/01 - Graph/Stack/{month}'])
     fig.savefig(os.path.normcase(f'01 - Graph/Stack/{month}/{short_date}_stack.pdf'), format='pdf')
@@ -422,13 +437,9 @@ def to_print (list_df):
 #Creation des DB
 current = os.path.dirname(os.path.realpath(__file__))
 
-to_replace = numpy.array([65202, 68605, 70478, 74390, 78167, 82048, 86334, 90676, 93790, 
-                  95403, 98076, 103373, 106206, 108847, 109252, 111821, 112606,
-                  114657, 117324], dtype=float)
-    
-list_df = import_df_from_I()
-#list_df = import_df_from_xlsx(current)
-save_df (list_df, current)
+#list_df, to_replace = import_df_from_I()
+list_df, to_replace = import_df_from_xlsx(current)
+save_df (list_df, to_replace, current)
 
 list_df= clean_up(list_df)
 list_df = ajusted_values(list_df, to_replace) #list_df[0] to list_df[2]
@@ -460,6 +471,7 @@ lim_date = [50, len_tot]
 lim_reg_cases = [22, len_tot, 22, 24] 
 lim_reg_death = [len_tot, len_tot,24, len_tot]
 intv = 3
+#list_country = ['France', 'US', 'Italy', 'Germany']
 list_country = ['France', 'US', 'Italy', 'Germany']
 
 plot (list_df, lim_date, lim_reg_cases, lim_reg_death, intv, list_country, colors, regression=False)
