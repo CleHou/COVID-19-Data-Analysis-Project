@@ -391,8 +391,8 @@ def plot2 (a_df, country, list_date) :
 #Creation des DB
 current = os.path.dirname(os.path.realpath(__file__))
 
-#list_df, to_replace = import_df_from_I()
-list_df, to_replace = import_df_from_xlsx(current)
+list_df, to_replace = import_df_from_I() #Data import from the Internet
+#list_df, to_replace = import_df_from_xlsx(current) #Data import from local file if already downloaded
 save_df (list_df, to_replace)
 
 list_df= clean_up(list_df)
