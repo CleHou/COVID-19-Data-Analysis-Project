@@ -229,8 +229,8 @@ def create_values_C (list_df, country, list_a, list_b, list_c):
 #Creation des DB
 current = os.path.dirname(os.path.realpath(__file__))
 
-list_df, to_replace = import_df_from_I() #Data import from the Internet
-#list_df, to_replace = import_df_from_xlsx(current) #Data import from local file if already downloaded
+#list_df, to_replace = import_df_from_I()
+list_df, to_replace = import_df_from_xlsx(current)
 save_df (list_df, to_replace)
 
 list_df= clean_up(list_df)
@@ -251,12 +251,12 @@ country = 'France'
 list_a = numpy.linspace(10000, 250000, 200)
 #list_a = [110000, 122260]
 list_b = numpy.linspace(-14, -5, 200)
-list_b = [-11]
-list_c=numpy.linspace(0.05, 0.9, 200)
-#list_c = [0.15]
+#list_b = [-11]
+#list_c=numpy.linspace(0.05, 0.9, 200)
+list_c = [0.15]
 
-list_val, ordre = create_values_B (list_df, country, list_a, list_b, list_c)
-plot_3D (list_val, list_a, list_c, list_b, country, ordre) #Dernière liste = plus petite
+list_val, ordre = create_values_C (list_df, country, list_a, list_b, list_c)
+plot_3D (list_val, list_a, list_b, list_c, country, ordre) #Dernière liste = plus petite
 
 
 #print(data, '\n')

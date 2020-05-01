@@ -174,14 +174,14 @@ def reg_log_der (t, a,b,c):
     return y
 
 def try_start (data_to_fit, list_t, country, end):
-    start_range = numpy.arange(30, 60)
-    df_result = pandas.DataFrame(columns=['a', 'b', 'c', 'r2'])
+    start_range = numpy.arange(30, len(data_to_fit)-30)
+    df_result = pandas.DataFrame(columns=['α', 'ß', 'γ', 'r2'])
     
     for start in tqdm.tqdm(start_range, desc = country):
         new_list_t = list_t [start:end]
         new_data_to_fit = data_to_fit[start:end]
         
-        val_ini = numpy.array([1.3*new_data_to_fit[-1], -4, 0.001])
+        val_ini = numpy.array([2*new_data_to_fit[-1], -14, 0.01])
         
         list_res = mini_RMSE (new_data_to_fit, new_list_t, val_ini)
         df_result.loc[start] = list_res
@@ -190,8 +190,8 @@ def try_start (data_to_fit, list_t, country, end):
     return df_result
 
 def try_start2 (data_to_fit, list_t, country, end):
-    start_range = numpy.arange(30, 60)
-    df_result = pandas.DataFrame(columns=['a', 'b', 'c', 'r2'])
+    start_range = numpy.arange(30, len(data_to_fit)-30)
+    df_result = pandas.DataFrame(columns=['α', 'ß', 'γ', 'r2'])
     
     for start in start_range:
         new_list_t = list_t [start:end]
@@ -213,7 +213,7 @@ def plot_para (df_result, country, date):
 
     
     fig, axs = plt.subplots(1,2, num=f'Parameter {country}', figsize=(15,15))
-    index = ['a', 'r2']
+    index = ['α', 'r2']
     titles = [r'$\alpha$', r'$r^2$']
     
     list_x = list(df_result.index)
@@ -230,6 +230,8 @@ def plot_para (df_result, country, date):
     
     logo = image.imread('https://raw.githubusercontent.com/CleHou/COVID-19-Data-Analysis-Project/master/04-Other/4.1-Logo/Logo2_200px.png')
     fig.figimage(logo, 30, 20, zorder=3)
+    
+    fig.text(0.85, 0.05, 'Data source: John Hopkins University \nAnalysis: C.Houzard', fontsize=8)
     
     file_path = creation_folder ([f'/3.1 - Modelisation/{country}/{month}/Parameters',f'/3.1 - Modelisation/{country}/{month}/Previews'])
     fig.savefig(file_path[0] + f'Parameters_{country}_{short_date}.pdf', dpi=200)
@@ -289,6 +291,8 @@ def plot_max_min (data, data_der, df_result, list_t, country, date):
     logo = image.imread('https://raw.githubusercontent.com/CleHou/COVID-19-Data-Analysis-Project/master/04-Other/4.1-Logo/Logo2_200px.png')
     fig.figimage(logo, 30, 20, zorder=3)
     
+    fig.text(0.85, 0.05, 'Data source: John Hopkins University \nAnalysis: C.Houzard', fontsize=8)
+    
     file_paths = creation_folder ([f'/3.1 - Modelisation/{country}/{month}/Predictions', f'/3.1 - Modelisation/{country}/{month}/Previews'])
     fig.savefig(file_paths[0] + f'Predictions_{country}_{short_date}.pdf', dpi=200)
     fig.savefig(file_paths[1] + f'Preview_{country}_{short_date}.png', format='png', dpi=300)
@@ -325,13 +329,21 @@ def modelisation (list_df, list_country):
     print('\n', df_para)
     print('\n', df_propreties)
     print('\n', df_end_epidemic)
+    month = (list_df[0].columns[-1]).strftime("%m - %B")
+    short_date = (list_df[0].columns[-1]).strftime("%d-%m-%Y")
+    file_paths = creation_folder ([f'/3.1 - Modelisation/Output Data/{month}'])
+    writer=pandas.ExcelWriter(file_paths[0]+f'Data_{short_date}.xlsx', engine='xlsxwriter')
+    df_para.to_excel(writer, sheet_name='Parameters')
+    df_propreties.to_excel(writer, sheet_name='Properties')
+    df_end_epidemic.to_excel(writer, sheet_name='End epidemic')
+    writer.save()
         
         
 def test_end (list_df, list_country):
-    list_end =  numpy.arange(75, len(dates.date2num(list_df[0].columns)), 1)
+    list_end =  numpy.arange(len(list_df[0].columns)-10, len(list_df[0].columns), 1)
     list_df_result = []
     for country in list_country:
-        a_df = pandas.DataFrame(columns=['a (rmax)', 'a (amax)', 'r (rmax)', 'r (amax)'])
+        a_df = pandas.DataFrame(columns=['α (r_max)', 'α (α_max)', 'r (r_max)', 'r (α_max)'])
         for an_end in tqdm.tqdm(list_end, desc=country):
             data_to_fit = numpy.array(list_df[0].loc[country])[:an_end]
             list_t = numpy.arange(1, an_end+1, 1)
@@ -360,15 +372,15 @@ def plot2 (a_df, country, list_date) :
 
     fig, axs = plt.subplots(1,2, figsize=(15,15), num=f'Test des paramètres {country}')
     
-    axs[0].plot(list_date, a_df.loc[:,'a (rmax)'],label=r'Selected curve $\max(r^2)$', color=colors[0], linewidth=0.75)
-    axs[0].plot(list_date, a_df.loc[:,'a (amax)'],label=r'Selected curve $\max(\alpha)$', color=colors[1], linewidth=0.75)
+    axs[0].plot(list_date, a_df.loc[:,'α (r_max)'],label=r'Selected curve: $\max(r^2)$', color=colors[0], linewidth=0.75)
+    axs[0].plot(list_date, a_df.loc[:,'α (α_max)'],label=r'Selected curve: $\max(\alpha)$', color=colors[1], linewidth=0.75)
     axs[0].grid()
     axs[0].set_title(r'Predicted $\alpha$ as a function of time')
     axs[0].set_xlabel('Date of prediction')
     axs[0].set_ylabel(r'Predicted $\alpha$')
     
-    axs[1].plot(list_date, a_df.loc[:,'r (rmax)'],label='$r_{max}$', color=colors[0], linewidth=0.75)
-    axs[1].plot(list_date, a_df.loc[:,'r (amax)'],label='$a_{max}$', color=colors[1], linewidth=0.75)
+    axs[1].plot(list_date, a_df.loc[:,'r (r_max)'],label='$r_{max}$', color=colors[0], linewidth=0.75)
+    axs[1].plot(list_date, a_df.loc[:,'r (α_max)'],label='$a_{max}$', color=colors[1], linewidth=0.75)
     axs[1].set_title(r'Values of $r^2$ as a functin of time')
     axs[1].set_xlabel('Date of prediction')
     axs[1].set_ylabel(r'Values of $r^2$')
@@ -383,6 +395,8 @@ def plot2 (a_df, country, list_date) :
     logo = image.imread('https://raw.githubusercontent.com/CleHou/COVID-19-Data-Analysis-Project/master/04-Other/4.1-Logo/Logo2_200px.png')
     fig.figimage(logo, 30, 20, zorder=3)
     
+    fig.text(0.85, 0.05, 'Data source: John Hopkins University \nAnalysis: C.Houzard', fontsize=8)
+    
     file_path = creation_folder ([f'/3.2 - Prediction study/Prediction evolution/{country}/{month}'])
     fig.savefig(file_path[0] + f'Pred_evol_{country}_{short_date}.pdf', dpi=200)
     #fig.savefig(f'01 - Modelisation/{country}/{month}/Previews/Preview_{short_date}', format='png', dpi=300)
@@ -391,8 +405,8 @@ def plot2 (a_df, country, list_date) :
 #Creation des DB
 current = os.path.dirname(os.path.realpath(__file__))
 
-list_df, to_replace = import_df_from_I() #Data import from the Internet
-#list_df, to_replace = import_df_from_xlsx(current) #Data import from local file if already downloaded
+#list_df, to_replace = import_df_from_I()
+list_df, to_replace = import_df_from_xlsx(current)
 save_df (list_df, to_replace)
 
 list_df= clean_up(list_df)
