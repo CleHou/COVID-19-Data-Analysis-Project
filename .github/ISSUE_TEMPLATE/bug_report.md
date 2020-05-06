@@ -1,8 +1,8 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
-title: "[xx] Feature"
-labels: Improvement
+name: Bug report
+about: Create a report to help us improve
+title: "[xx] BUG"
+labels: bug
 assignees: CleHou
 
 ---
