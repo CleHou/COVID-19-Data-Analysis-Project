@@ -27,5 +27,5 @@ Requires Python 3.7 with the following packages: Numpy, Pandas, Matplolib, SkLea
 ## Questions/Bug Report
 Please use the Issues tab.
 
-Otherwise, I can be contacted throw the websites [houzardc.fr](houzardc.fr)
+Otherwise, I can be contacted throw the website [houzardc.fr](houzardc.fr)
 
