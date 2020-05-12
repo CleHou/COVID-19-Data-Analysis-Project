@@ -15,7 +15,7 @@ Requires Python 3.7 with the following packages: Numpy, Pandas, Matplolib, SkLea
 |---|---|---|---|---|
 |Numpy|x|x|x|x|
 |Pandas|x|x|x|x|
-|Matplolib|x||x|x|
+|Matplotlib|x||x|x|
 |SkLearns|x||x||
 |SciPy|||x||
 |DateTime|||x||
