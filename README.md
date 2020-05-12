@@ -1,7 +1,7 @@
 ![alt text](https://github.com/CleHou/COVID-19-Data-Analysis-Project/blob/master/99-Other/99.1-Logo/Logo2_100px.png)
 # COVID-19 Data Analysis Project
 ## Presentation of the project
-This project was created to offer a different analysis of the data available for the COVID-19 epidemic. The vizualtion are published on [houzardc.fr](houzardc.fr).
+This project was created to offer a different analysis of the data available for the COVID-19 epidemic. The vizualtion are published on [houzardc.fr](https://www.houzardc.fr).
 
 What's available at the time:
 * Graphs of the total number of cases, daily increment of the number of cases, the total number of death, daily increment of the number of death, the datality rate and the growth rate of the number of cases (from one day to the next)
@@ -27,5 +27,5 @@ Requires Python 3.7 with the following packages: Numpy, Pandas, Matplolib, SkLea
 ## Questions/Bug Report
 Please use the Issues tab.
 
-Otherwise, I can be contacted throw the website [houzardc.fr](houzardc.fr)
+Otherwise, I can be contacted throw the website [houzardc.fr](https://www.houzardc.fr)
 
