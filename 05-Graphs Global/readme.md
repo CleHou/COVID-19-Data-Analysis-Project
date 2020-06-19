@@ -1,5 +1,5 @@
 ![alt text](https://github.com/CleHou/COVID-19-Data-Analysis-Project/blob/master/99-Other/99.1-Logo/Logo2_100px.png)
-# COVID-19 Data Analysis Project - 03 - Global graphs
+# COVID-19 Data Analysis Project - 05 - Global graphs
 This code is used to generate graphs (number of cases and death and their daily evolution) of a certain subpart of a chosen scale (e.g. on a world scale a subpart would be a country, on a national scale, a subpart would be a region or a states). The output is a PDF where each page is the graph of a subpart.
 
 As for all the codes in the repository, if the `import_df_from_I()` function is used instead of `import_df_from_xlsx()`, the data is automaticaly updated.
