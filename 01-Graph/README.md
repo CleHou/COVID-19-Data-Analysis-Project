@@ -4,8 +4,8 @@ This code is used to plot
 * The number of cases and death and their daily variation as a function of time for France, the US, Italy and Gemrnay as well as for the world
 * The stack plot of the number of cases and death
 
-As for all the codes in the respiratory, if the `import_df_from_I()` function is used instead of `import_df_from_xlsx()`, the data is automaticaly updated.
-For this code, the data is imported from [John Hopkins Univeristy](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series).
+As for all the codes in the repository, if the `import_df_from_I()` function is used instead of `import_df_from_xlsx()`, the data is automaticaly updated.
+For this code, the data is imported from [John Hopkins Univeristy](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series), [OpenCOVID19 France GitHub repository](https://github.com/opencovid19-fr/data/blob/master/dist/chiffres-cles.csv), [Santé Publique France](https://www.census.gov/topics/population.html).
 
 Examples of the output: 
 ![alt text](https://houzardc.fr/wp-content/uploads/2020/05/4_countries_preview.png)
