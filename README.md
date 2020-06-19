@@ -5,24 +5,25 @@ This project was created to offer a different analysis of the data available for
 
 What's available at the time:
 * Graphs of the total number of cases, daily increment of the number of cases, the total number of death, daily increment of the number of death, the datality rate and the growth rate of the number of cases (from one day to the next)
-* Maps of the daily cases, death and cases balance
+* Maps (daily cases & death, cases growth and cases/death per capita) at an intenration scale (i.e. by country) at a natinal scale for France and the US (i.e respectively at a regional scale and at a states scale) 
 * Predictions based on a logistic regression
-* Map for France by region and graphs of the number of cases, death, peaople in ICU and in hospitals
+* Graphs of the number of cases, death, peaople in ICU and in hospitals
+* Grapphs of the number of cases and death and their respective daily variation at an intenration scale (i.e. by country) at a natinal scale for France and the US (i.e respectively at a regional scale and at a states scale) 
 
 ## Requirement
 Requires Python 3.7 with the following packages: Numpy, Pandas, Matplolib, SkLearns, SciPy, DateTime, Os, TQDM, GeoView, Holoviews. Precisely for each part of the repository:
-| Part | 01 - Graph | 02 - Maps | 03 - Predictions | 04 - French Data |
+| Part | 01 - Graph | 02 - Maps | 03 - Predictions | 04 - French Data | 05 - Globak graphs |
 |---|:---:|:---:|:---:|:---:|
-|Numpy|x|x|x|x|
-|Pandas|x|x|x|x|
-|Matplotlib|x||x|x|
-|SkLearns|x||x||
-|SciPy|||x||
-|DateTime|||x||
-|Os|x|x|x|x|
-|TQDM||x|x|x|
-|GeoView||x||x|
-|Holoviews||x||x|
+|Numpy|x|x|x|x|x|
+|Pandas|x|x|x|x|x|
+|Matplotlib|x||x|x|x|
+|SkLearns|x||x|||
+|SciPy|||x|||
+|DateTime|x|x|x||x|
+|Os|x|x|x|x|x|
+|TQDM||x|x|x|x|
+|GeoView||x||||
+|Holoviews||x||||
 
 ## Questions/Bug Report
 Please use the Issues tab.
