@@ -167,7 +167,7 @@ def plot_3D (list_val, list_1, list_2, list_short, country, order):
     Title = f'RMSE at {order[0]}={list_short[-1]} fixed'
         
     plt.title(Title)
-    logo = image.imread('https://raw.githubusercontent.com/CleHou/COVID-19-Data-Analysis-Project/master/04-Other/4.1-Logo/Logo2_200px.png')
+    logo = image.imread('https://raw.githubusercontent.com/CleHou/COVID-19-Data-Analysis-Project/master/99-Other/99.1-Logo/Logo2_200px.png')
     fig1.figimage(logo, 30, 20, zorder=3)
 
 def create_values_A (list_df, country, list_a, list_b, list_c):
