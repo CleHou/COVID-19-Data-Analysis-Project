@@ -13,7 +13,7 @@ What's available at the time:
 ## Requirement
 Requires Python 3.7 with the following packages: Numpy, Pandas, Matplolib, SkLearns, SciPy, DateTime, Os, TQDM, GeoView, Holoviews. Precisely for each part of the repository:
 | Part | 01 - Graph | 02 - Maps | 03 - Predictions | 04 - French Data | 05 - Globak graphs |
-|---|:---:|:---:|:---:|:---:|
+|---|:---:|:---:|:---:|:---:|:---:|
 |Numpy|x|x|x|x|x|
 |Pandas|x|x|x|x|x|
 |Matplotlib|x||x|x|x|
