@@ -8,7 +8,7 @@ What's available at the time:
 * Maps (daily cases & death, cases growth and cases/death per capita) at an intenration scale (i.e. by country) at a natinal scale for France and the US (i.e respectively at a regional scale and at a states scale) 
 * Predictions based on a logistic regression
 * Graphs of the number of cases, death, peaople in ICU and in hospitals
-* Grapphs of the number of cases and death and their respective daily variation at an intenration scale (i.e. by country) at a natinal scale for France and the US (i.e respectively at a regional scale and at a states scale) 
+* Graphs of the number of cases and death and their respective daily variation at an intenration scale (i.e. by country) at a natinal scale for France and the US (i.e respectively at a regional scale and at a states scale) 
 
 ## Requirement
 Requires Python 3.7 with the following packages: Numpy, Pandas, Matplolib, SkLearns, SciPy, DateTime, Os, TQDM, GeoView, Holoviews. Precisely for each part of the repository:
