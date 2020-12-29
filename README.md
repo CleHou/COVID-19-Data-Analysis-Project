@@ -1,32 +1,57 @@
-![alt text](https://github.com/CleHou/COVID-19-Data-Analysis-Project/blob/master/99-Other/99.1-Logo/Logo2_100px.png)
-# COVID-19 Data Analysis Project
-## Presentation of the project
-This project was created to offer a different analysis of the data available for the COVID-19 epidemic. The vizualtion are published on [houzardc.fr](https://www.houzardc.fr).
+COVID19_DAP
+==============================
 
-What's available at the time:
-* Graphs of the total number of cases, daily increment of the number of cases, the total number of death, daily increment of the number of death, the datality rate and the growth rate of the number of cases (from one day to the next)
-* Maps (daily cases & death, cases growth and cases/death per capita) at an intenration scale (i.e. by country) at a natinal scale for France and the US (i.e respectively at a regional scale and at a states scale) 
-* Predictions based on a logistic regression
-* Graphs of the number of cases, death, peaople in ICU and in hospitals
-* Graphs of the number of cases and death and their respective daily variation at an intenration scale (i.e. by country) at a natinal scale for France and the US (i.e respectively at a regional scale and at a states scale) 
+Descritpion
 
-## Requirement
-Requires Python 3.7 with the following packages: Numpy, Pandas, Matplolib, SkLearns, SciPy, DateTime, Os, TQDM, GeoView, Holoviews. Precisely for each part of the repository:
-| Part | 01 - Graph | 02 - Maps | 03 - Predictions | 04 - French Data | 05 - Globak graphs |
-|---|:---:|:---:|:---:|:---:|:---:|
-|Numpy|x|x|x|x|x|
-|Pandas|x|x|x|x|x|
-|Matplotlib|x||x|x|x|
-|SkLearns|x||x|||
-|SciPy|||x|||
-|DateTime|x|x|x||x|
-|Os|x|x|x|x|x|
-|TQDM||x|x|x|x|
-|GeoView||x||||
-|Holoviews||x||||
+Project Organization
+------------
 
-## Questions/Bug Report
-Please use the Issues tab.
+    ├── LICENSE
+    ├── Makefile           <- Makefile with commands like `make data` or `make train`
+    ├── README.md          <- The top-level README for developers using this project.
+    ├── data
+    │   ├── external       <- Data from third party sources.
+    │   ├── interim        <- Intermediate data that has been transformed.
+    │   ├── processed      <- The final, canonical data sets for modeling.
+    │   └── raw            <- The original, immutable data dump.
+    │
+    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
+    │
+    ├── models             <- Trained and serialized models, model predictions, or model summaries
+    │
+    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
+    │                         the creator's initials, and a short `-` delimited description, e.g.
+    │                         `1.0-jqp-initial-data-exploration`.
+    │
+    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
+    │
+    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
+    │   └── figures        <- Generated graphics and figures to be used in reporting
+    │
+    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
+    │                         generated with `pip freeze > requirements.txt`
+    │
+    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
+    ├── src                <- Source code for use in this project.
+    │   ├── __init__.py    <- Makes src a Python module
+    │   │
+    │   ├── data           <- Scripts to download or generate data
+    │   │   └── make_dataset.py
+    │   │
+    │   ├── features       <- Scripts to turn raw data into features for modeling
+    │   │   └── build_features.py
+    │   │
+    │   ├── models         <- Scripts to train models and then use trained models to make
+    │   │   │                 predictions
+    │   │   ├── predict_model.py
+    │   │   └── train_model.py
+    │   │
+    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
+    │       └── visualize.py
+    │
+    └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
 
-Otherwise, I can be contacted throw the website [houzardc.fr](https://www.houzardc.fr)
 
+--------
+
+<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
