@@ -230,6 +230,17 @@
             "sub_dir":"/gen_data",
             "encoding":"utf-8",
             "sep":","
+        },
+        {
+            "index":"Country_by_continent",
+            "link":"https:\/\/github.com\/CleHou\/COVID-19-Data-Analysis-Project\/raw\/master\/02-Maps\/country_by_continent.csv",
+            "type":"Pandas",
+            "update":false,
+            "last_update":null,
+            "file_name":"country_by_continent.csv",
+            "sub_dir":"/gen_data",
+            "encoding":"utf-8",
+            "sep":","
         }
     ]
 }
