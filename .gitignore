@@ -132,6 +132,7 @@ dmypy.json
 .pyre/
 .DS_Store
 .DS_Store
+data/raw/last_update.json
 data/raw/covid_data/fra/fra_gendata.csv
 data/raw/covid_data/fra/fra_indic_dpt.csv
 data/raw/covid_data/fra/fra_indic_nat.csv
@@ -161,4 +162,3 @@ data/raw/shapefile/us/states/US_States_shapefile.dbf
 data/raw/shapefile/us/states/US_States_shapefile.prj
 data/raw/shapefile/us/states/US_States_shapefile.shp
 data/raw/shapefile/us/states/US_States_shapefile.shx
-*.json
