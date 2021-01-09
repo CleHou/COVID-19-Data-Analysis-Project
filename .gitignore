@@ -143,8 +143,6 @@ data/raw/covid_data/us/us_jh_death.csv
 data/raw/covid_data/us/us_testing.csv
 data/raw/covid_data/world/world_jh_cases.csv
 data/raw/covid_data/world/world_jh_death.csv
-data/raw/gen_data/contries_LatLong.csv
-data/raw/gen_data/fra_pop.csv
 data/raw/gen_data/us_pop.csv
 data/raw/gen_data/world_pop.csv
 data/raw/shapefile/fra/departement/Fra_Departement_shapefile.cpg
