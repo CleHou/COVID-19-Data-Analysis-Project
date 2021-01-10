@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-COVID19_DAP documentation!
+Documenation COVID-19 Data Analysis Project!
 ==============================================
 
 Contents:
@@ -13,6 +13,7 @@ Contents:
 
    getting-started
    commands
+   Data Import
 
 
 

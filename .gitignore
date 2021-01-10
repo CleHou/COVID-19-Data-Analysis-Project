@@ -160,3 +160,4 @@ data/raw/shapefile/us/states/US_States_shapefile.dbf
 data/raw/shapefile/us/states/US_States_shapefile.prj
 data/raw/shapefile/us/states/US_States_shapefile.shp
 data/raw/shapefile/us/states/US_States_shapefile.shx
+reports/last_report.json

@@ -19,6 +19,14 @@ def list_dir_files (file_path):
     list_files = list(numpy.concatenate(list_files).flat)
     return list_subdirr, list_files
 
+def get_parent_dir (n, suffix=''):
+    dir_name = os.path.dirname(os.path.realpath(__file__))
+    for k in range(n):
+        dir_name = os.path.dirname(dir_name)
+        
+    dir_name = f'{dir_name}/{suffix}'       
+    return dir_name
+
 def creation_folder (root, paths):
     list_directory = [os.path.normcase(root + directory) for directory in paths]
     
