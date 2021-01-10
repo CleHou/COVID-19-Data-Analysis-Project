@@ -37,8 +37,6 @@ def last_update_db (dir_name, db_list):
     if 'last_update.json' in list_files:
         last_update = pandas.read_json(f'{dir_name}/last_update.json', orient = "table")
         last_update['delta_day'] = last_update.apply(lambda x: (pandas.to_datetime('today')-x["date"]).days,axis=1)
-        print(last_update)
-        print('\n')
         
     else:
         last_update = pandas.DataFrame(index=db_daily.index, columns=['date', 'delta_day'])
@@ -67,10 +65,9 @@ def import_static (data_dir, db_list):
    
     for a_df_name in df_static.index:
         if df_static.loc[a_df_name, 'file_name'] not in list_files:
-            print(f"Downloading {df_static.loc[a_df_name, 'file_name']}...", end='\r')
+            print(f"Downloading {df_static.loc[a_df_name, 'file_name']}...", end='\x1b[1K\r')
             import_and_save(a_df_name, raw_data_dir, df_static)
             print(f"{df_static.loc[a_df_name, 'file_name']} downloaded")
-            print('\n')
     print('\n\n')
 
 def import_daily (data_dir, db_list, last_update_db):
@@ -79,10 +76,9 @@ def import_daily (data_dir, db_list, last_update_db):
     
     for a_df_name in df_daily.index:
         if last_update_db.loc[a_df_name, 'delta_day'] > 1:
-            print(f"Downloading {df_daily.loc[a_df_name, 'file_name']}...", end='\r')
+            print(f"Downloading {df_daily.loc[a_df_name, 'file_name']}...", end='')
             import_and_save(a_df_name, raw_data_dir, df_daily)
-            print(f"{df_daily.loc[a_df_name, 'file_name']} downloaded")
-            print('\n')
+            print(f"\r{df_daily.loc[a_df_name, 'file_name']} was downloaded")
     print('\n\n')
             
 def clean_JH (data_dir, db_list, last_update):
@@ -151,7 +147,7 @@ def get_dates (data_dir, db_list, last_update):
     last_update.loc[:,'date'] = last_update.apply(lambda x: x["date"].strftime("%Y-%m-%d"), axis=1)
     last_update.to_json(f'{data_dir}/last_update.json', orient = "table", indent=4)
 
-data_dir = get_data_dir (2) # .../COVID19/data
+data_dir = gen_fct.get_parent_dir(2, 'data') # .../COVID19/data
 db_list = read_db_list (data_dir)
 last_update = last_update_db (data_dir, db_list)
 
