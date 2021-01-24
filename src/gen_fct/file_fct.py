@@ -7,6 +7,7 @@ Created on Sat Jan  9 15:56:01 2021
 """
 import os 
 import numpy
+import pandas
 
 def list_dir_files (file_path):
     file_path = os.path.normcase(file_path)
@@ -36,6 +37,3 @@ def creation_folder (root, paths):
             os.makedirs(directory)
     list_return = [root + x for x in paths]      
     return list_return
-    
-def helloworld():
-    print('hello')

@@ -161,3 +161,8 @@ data/raw/shapefile/us/states/US_States_shapefile.prj
 data/raw/shapefile/us/states/US_States_shapefile.shp
 data/raw/shapefile/us/states/US_States_shapefile.shx
 reports/last_report.json
+data/processed/covid_data/fra/fra_gendata.json
+data/processed/covid_data/world/world_jh_map.geojson
+data/processed/covid_data/world/world_jh.json
+data/processed/covid_data/us/us_jh_map.geojson
+data/raw/gen_data/dept-and-regions.csv
