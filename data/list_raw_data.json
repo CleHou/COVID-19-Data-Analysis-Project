@@ -178,7 +178,7 @@
         },
         {
             "index":"Fra_Regions_shapefile",
-            "link":"https:\/\/datanova.laposte.fr\/explore\/dataset\/contours-geographiques-des-nouvelles-regions-metropole\/download\/?format=shp&timezone=Europe\/Berlin&lang=fr",
+            "link":"https:\/\/raw.githubusercontent.com\/gregoiredavid\/france-geojson\/master\/regions-version-simplifiee.geojson",
             "type":"GeoPandas",
             "update":false,
             "last_update":null,
@@ -238,6 +238,17 @@
             "update":false,
             "last_update":null,
             "file_name":"country_by_continent.csv",
+            "sub_dir":"/gen_data",
+            "encoding":"utf-8",
+            "sep":","
+        },
+        {
+            "index":"Dept_reg",
+            "link":"https:\/\/www.data.gouv.fr\/fr\/datasets\/r\/987227fb-dcb2-429e-96af-8979f97c9c84",
+            "type":"Pandas",
+            "update":false,
+            "last_update":null,
+            "file_name":"dept-and-regions.csv",
             "sub_dir":"/gen_data",
             "encoding":"utf-8",
             "sep":","
