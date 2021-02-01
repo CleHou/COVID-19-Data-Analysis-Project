@@ -166,3 +166,11 @@ data/processed/covid_data/world/world_jh_map.geojson
 data/processed/covid_data/world/world_jh.json
 data/processed/covid_data/us/us_jh_map.geojson
 data/raw/gen_data/dept-and-regions.csv
+data/processed/covid_data/fra/fra_dpt.json
+data/processed/covid_data/fra/fra_nat.json
+data/processed/covid_data/fra/fra_reg.json
+data/processed/covid_data/fra/fra_testing.json
+data/processed/covid_data/fra/fra_vax.json
+data/processed/covid_data/us/us_testing.json
+data/processed/gen_data/us_pop.json
+data/raw/covid_data/fra/fra_vax.csv
