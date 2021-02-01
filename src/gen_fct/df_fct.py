@@ -44,6 +44,8 @@ def import_df (list_df, list_prop):
                 importing_df = gpd.read_file(import_path)
             elif export_format == 'json' or export_format == 'geojson':
                 importing_df = gpd.read_json(import_path, orient = "table")
+            elif export_format == 'feather':
+                importing_df = gpd.read_feather(import_path)
                 
       
         list_final_df.append(importing_df)
@@ -76,6 +78,8 @@ def export_df (list_df, list_prop): #list_df = [['name', df], ..., ], list_prop 
                 df.to_file(export_path, index=True)
             elif export_format == 'geojson':
                 df.to_file(export_path, orient = "table", indent=4, driver="GeoJSON")
+            elif export_format == 'feather':
+                df.to_feather(export_path)
             else:
                 print(f"File {source_df.loc[df_name, 'file_name']} couldn't be saved, please change extension")
 
