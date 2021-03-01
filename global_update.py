@@ -50,4 +50,4 @@ list_files = ["4_countries_delta", "4_countries_growth", "world_delta", "world_g
               "Map_France_Prev_tx_pos", "French_Vax", "US_Testing", "France_Testing"]
 
 ftp_transfer.upload(list_files, 'daily')
-
+print('Done')
