@@ -114,7 +114,7 @@ class Transfer:
                 main_file = name_file + '.pdf'
                 ext1 = '.pdf'
                 preview_file = name_file + '_preview.png'
-                ext2 = '.png'
+                ext2 = '_preview.png'
             
             elif self.db_files.loc[a_file, 'type_file'] == 'Map':
                 main_file = name_file + '.html'
@@ -147,6 +147,107 @@ class Transfer:
             
         print('\n')
         print(f'* {tot_file} files transfered *')
+
+class LinkExport:
+    def __init__ (self, list_files, type_transfer):
+        self.list_files = list_files
+        self.type_transfer = type_transfer
+        self.db_files, self.db_file_date = df_fct.read_db_files()
+        self.root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+        self.list_names = []
+
+    def get_extension (self, a_file):
+        if self.db_files.loc[a_file, 'type_file'] == 'Graph':
+            ext = ['.pdf', '.png']
+        
+        elif self.db_files.loc[a_file, 'type_file'] == 'Map':
+            ext = ['.html', '']
+            
+        elif self.db_files.loc[a_file, 'type_file'] == 'MapPrev':
+            ext = ['.png', '']
+
+        return ext
+
+    def get_name (self, a_file):
+        preview_file = ''
+
+        if self.type_transfer == 'daily':
+            main_file = a_file
+            if self.db_files.loc[a_file, 'preview']:
+                preview_file = a_file + '_preview'
+
+        elif self.type_transfer == 'article':
+            if self.db_files.loc[a_file, 'add_date']:
+                day = self.db_file_date.loc[a_file, 'date'].strftime("%Y-%m-%d")
+
+                main_file = self.db_files.loc[a_file, 'pref'] + day +  self.db_files.loc[a_file, 'suf']
+
+                if self.db_files.loc[a_file, 'preview']:
+                    preview_file = self.db_files.loc[a_file, 'pref'] + day +  self.db_files.loc[a_file, 'suf'] + '_preview'
+
+            else:
+                main_file = self.db_files.loc[a_file, 'pref'] + self.db_files.loc[a_file, 'suf']
+
+                if self.db_files.loc[a_file, 'preview']:
+                    preview_file = self.db_files.loc[a_file, 'pref'] + self.db_files.loc[a_file, 'suf'] + '_preview'
+
+        return [main_file, preview_file]
+
+            
+
+    def return_path (self):
+         for a_file in self.list_files:
+            names = self.get_name(a_file)
+            extensions = self.get_extension(a_file)
+
+            if self.type_transfer == 'daily':
+                self.target_path = self.db_files.loc[a_file, 'ftp_path']
+                list_sub = self.target_path.split('/')
+                self.target_path = 'https://houzardc.fr'
+                for subfolder in list_sub[2:]:
+                    self.target_path += '/' + subfolder 
+                    
+                
+            elif self.type_transfer == 'article':
+                today = date.today().strftime("%Y-%m-%d")
+                self.target_path = self.db_files.loc[a_file, 'ftp_path'] + f'/{today}'
+                list_sub = self.target_path.split('/')
+                self.target_path = 'houzardc.fr'
+                for subfolder in list_sub[2:]:
+                    self.target_path += subfolder + '/'
+    
+
+            full_path = self.target_path + '/' + names[0] + extensions[0]
+            self.list_names.append(full_path)
+
+            prev_path = self.target_path + '/' + names[1] + extensions[1]
+            self.list_names.append(prev_path)
+
+    def __str__ (self):
+        self.return_path()
+        full_name = ''
+        for a_name in self.list_names:
+            if a_name[-1] != '/':
+                full_name += a_name + '\n'
+        return full_name
+    
+    def path_to_file (self):
+        self.return_path()
+        
+        if self.type_transfer == 'daily':
+            export_file = open('export_file.txt', 'w')
+            
+        elif self.type_transfer == 'article':
+            today = date.today().strftime("%Y-%m-%d")
+            export_file = open(f'export_file_{today}.txt', 'w')
+            
+        for a_name in self.list_names:
+            if a_name[-1] != '/':
+                export_file.write(a_name+'\n')
+            
+        export_file.close()
+        print('File saved')
+
         
 
 def upload (list_files, transfer_type):
@@ -160,6 +261,8 @@ if __name__ == '__main__':
     list_files = ["4_countries_delta", "4_countries_growth", "world_delta", "world_growth", "stack_plot", "France_delta", "France_growth",
               "France_Gen_Situation", "France_Indic_Nat", "Map_France_Indic", "Map_France_Prev_tx_incid", "Map_France_Prev_R", "Map_France_Prev_taux_occupation_sae",
               "Map_France_Prev_tx_pos", "French_Vax", "US_Testing", "France_Testing"]
-    upload (list_files, 'daily')
+    #upload (list_files, 'daily')
+    files = LinkExport(list_files, 'daily')
+    files.path_to_file()
 
 
