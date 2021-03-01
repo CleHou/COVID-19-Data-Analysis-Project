@@ -49,11 +49,29 @@ class WorldDataSet:
 
     def ajust_values (self):
         ini_date = pandas.to_datetime('2020-04-03', format='%Y-%m-%d')
-        last_date = self.df_world.index.get_level_values(1).unique('date')[-1]
+        last_date_world = self.df_world.index.get_level_values(1).unique('date')[-1]
+        last_date_fra = self.df_fra.index[-1]
         print(self.df_fra)
-        self.df_world.loc[('France', ini_date): ('France', last_date), 'cases'] = self.df_fra.loc[ini_date: last_date, ['cases']].values
-        self.df_world.loc['World'] = self.df_world.sum(level='date').values
-        
+        if last_date_world <= last_date_fra:
+            self.df_world.loc[('France', ini_date): ('France', last_date), 'cases'] = self.df_fra.loc[ini_date: last_date, ['cases']].values
+
+        elif last_date_world > last_date_fra:
+            self.df_world.loc['World'] = self.df_world.sum(level='date').values
+    
+    def backup_fra (self, last_date_world):
+        backup_df = pandas.read_csv('https://github.com/CleHou/COVID-19-Data-Analysis-Project/raw/master/01-Graph/France_data.csv')
+        backup_df = backup_df.set_index('Date')
+        backup_df.loc[:,'Cases'] = pandas.to_numeric(backup_df.loc[:,'Cases'], downcast='float')
+        backup_df.index = pandas.to_datetime(backup_df.index)
+
+        last_date_fra_2 = backup_df.index[-1]
+
+        if last_date_world <= last_date_fra_2:
+            self.df_world.loc[('France', ini_date): ('France', last_date), 'cases'] = self.df_fra.loc[ini_date: last_date, ['Cases']].values
+
+        else:
+            raise ValueError('Source data and backup data for France not available')
+
     def complete_data (self):
         for type_data in ['cases', 'death']:
             self.df_world.loc[:,f'delta_{type_data}'] = self.df_world.loc[:,type_data].groupby(level='country').diff()
@@ -79,6 +97,7 @@ class WorldDataSet:
 class FrenchDataSets:
     def __init__ (self):
         self.df_fra = df_fct.import_df(['Fra_GenData'],['raw'])[0]
+        self.df_dpt_shp = df_fct.import_df(['Fra_Departements_shapefile'],['raw'])[0]
         self.df_fra_nat = pandas.DataFrame()
         self.df_fra_reg = pandas.DataFrame()
         self.df_fra_dpt = pandas.DataFrame()
@@ -137,47 +156,76 @@ class FrenchDataSets:
         df_fct.export_df([['Fra_Nat', self.df_fra_nat], ['Fra_Reg', self.df_fra_reg], ['Fra_Dpt', self.df_fra_dpt]],
                          ['processed', 'processed', 'processed'])
 
-        return self.df_fra_nat, self.df_fra_reg, self.df_fra_dpt
+
+class FrenchIndic ():
+    def __init__ (self):
+        self.df_indic_nat = df_fct.import_df(['Fra_Indic_Nat'],['raw'])[0]
+        self.df_indic_dpt = df_fct.import_df(['Fra_Indic_Dpt'],['raw'])[0]
+        self.df_dpt_shp = df_fct.import_df(['Fra_Departements_shapefile'],['raw'])[0]
+
+    def indic_nat (self):
+        self.df_indic_nat = self.df_indic_nat.set_index('extract_date')
+        self.df_indic_nat.index = pandas.to_datetime(self.df_indic_nat.index, format='%Y-%m-%d')
+        self.df_indic_nat.index = self.df_indic_nat.index.rename('date')
+        
+    def indic_dpt(self):
+        self.df_indic_dpt.loc[:,'extract_date'] = pandas.to_datetime(self.df_indic_dpt.loc[:,'extract_date'], format='%Y-%m-%d')
+        self.df_indic_dpt = self.df_indic_dpt.set_index(['extract_date', 'departement'])
+
+        self.df_dpt_shp = self.df_dpt_shp.set_index('code')
+        self.df_dpt_shp.index = self.df_dpt_shp.index.rename('departement')
+        
+        self.df_indic_dpt = self.df_indic_dpt.sort_index(level='extract_date')
+        self.df_indic_dpt = self.df_indic_dpt.sort_index(level='departement')
+        self.df_indic_dpt = self.df_indic_dpt.fillna(method='ffill')
+        self.df_indic_dpt = self.df_indic_dpt.join(self.df_dpt_shp)
+        self.df_indic_dpt = gpd.GeoDataFrame(self.df_indic_dpt)
+        self.df_indic_dpt = self.df_indic_dpt.dropna(subset=['nom'])
+        self.df_indic_dpt = self.df_indic_dpt.sort_index(level='extract_date')
+
+    def main(self):
+        self.indic_nat ()
+        self.indic_dpt()
+
+        df_fct.export_df([['Fra_Indic_Nat', self.df_indic_nat]],
+                         ['processed'])
+
+        return self.df_indic_dpt
+
 
 class FrenchVax ():
     def __init__(self):
-        self.df_vax = df_fct.import_df(['Fra_Vax'],['raw'])[0]
-    
+        self.data_vax = df_fct.import_df(['Fra_Vax'],['raw'])[0]
+        
     def clean_up_vax (self):
-        self.df_vax.loc[:,'date'] = pandas.to_datetime(self.df_vax.loc[:,'date'])
-        self.df_vax = self.df_vax.set_index(['nom', 'date'])
-        self.df_vax  = self.df_vax.sort_index()
-        #data_vax =data_vax.drop(columns=['code'])
+        self.data_vax.loc[:,'date'] = pandas.to_datetime(self.data_vax.loc[:,'jour'])
+        self.data_vax = self.data_vax.drop(columns=['jour'])
+        self.data_vax = self.data_vax.set_index(['date'])
+        self.data_vax = self.data_vax.rename(columns={'n_dose1': 'Vaccin jour', 'n_cum_dose1':'total_vaccines'})
         
-        for date in self.df_vax.index.get_level_values(1):
-            self.df_vax.loc[('France', date), 'total_vaccines'] = numpy.nan
+        dv = self.data_vax.loc[self.data_vax.index[-1],'total_vaccines'] - self.data_vax.loc[self.data_vax.index[0], 'total_vaccines']
+        dt = (self.data_vax.index[-1] - self.data_vax.index[0]).days
+        dvdt = dv/dt
         
-        self.df_vax.loc['France', 'total_vaccines'] = self.df_vax.sum(level='date').values
-        self.df_vax.loc[:,'Vaccin jour'] = self.df_vax.loc[:,'total_vaccines'].groupby(level='nom').diff()
+        for date in self.data_vax.index:
+            jour = (date - self.data_vax.index[0]).days
+            self.data_vax.loc[date, 'vax journalier'] = dvdt*jour + self.data_vax.loc[self.data_vax.index[0], 'total_vaccines']
         
-        for region in self.df_vax.index.get_level_values(0).unique():
-            list_date = self.df_vax.index.get_level_values(1)
-            dv = self.df_vax.loc[region, 'total_vaccines'][-1] - self.df_vax.loc[region, 'total_vaccines'][0]
-            dt = (list_date[-1] - list_date[0]).days
-            dvdt = dv/dt
-            for date in list_date:
-                jour = (date - list_date[0]).days
-                self.df_vax.loc[(region, date), 'vax journalier'] = dvdt*jour + self.df_vax.loc[region, 'total_vaccines'][0]
-            
-            if region == 'France':
-                days_to_targ = int(0.6 * 66 * 10**6 / dvdt)
-                date_to_targ = list_date[0] + pandas.Timedelta(days_to_targ, unit='d')
-                self.df_vax.loc[(region, date_to_targ), 'vax journalier'] = 0.6 * 66 * 10**6
-                
-        print(self.df_vax)
+        days_to_targ = int(0.6 * 66 * 10**6 / dvdt)
+        date_to_targ = self.data_vax.index[-1] + pandas.Timedelta(days_to_targ, unit='d')
+        self.data_vax.loc[date_to_targ, 'vax journalier'] = 0.6 * 66 * 10**6
+        print(self.data_vax.loc[date_to_targ])
+        
+        print(self.data_vax)
+        return self.data_vax
     
     def main(self):
         self.clean_up_vax()
-        df_fct.export_df([['Fra_Vax', self.df_vax]],
+        df_fct.export_df([['Fra_Vax', self.data_vax]],
                           ['processed'])
 
         
-        return self.df_vax
+        return self.data_vax
         
 
 class FrenchTest ():
@@ -205,7 +253,8 @@ class FrenchTest ():
         
     def concat_testing (self):
         self.fra_testing = pandas.concat([self.fra_testing_1, self.fra_testing_2])
-        self.fra_testing = self.fra_testing.rolling(window=7, center=True).mean()     
+        self.fra_testing = self.fra_testing.rolling(window=7, center=True).mean()
+        self.fra_testing.index = self.fra_testing.index.rename('date')
     
     def main(self):
         self.clean_up_testing_1()
@@ -450,13 +499,15 @@ class FrenchMapDataSet ():
         
 
 if __name__ == '__main__':
-    df_fra_nat, df_fra_reg, df_fra_dpt = FrenchDataSets().main()
+    df_fra_dpt_shpe = FrenchDataSets().main()
+    df_fra_dpt_shpe = FrenchIndic().main()
     df_world = WorldDataSet().main(7, False)
     df_us = USMapDataSet().main()
     df_fra = FrenchMapDataSet().main()
     df_vax = FrenchVax ().main()
     fra_testing = FrenchTest().main()
     us_testing = USTest().main()
+    
 
     
     

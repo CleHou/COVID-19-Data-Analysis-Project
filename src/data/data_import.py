@@ -57,12 +57,12 @@ def import_static (data_dir, db_list):
             print(f"{df_static.loc[a_df_name, 'file_name']} downloaded")
     print('\n\n')
 
-def import_daily (data_dir, db_list, last_update_db):
+def import_daily (data_dir, db_list, last_update_db, limit):
     raw_data_dir = os.path.normcase(f'{data_dir}/raw')
     df_daily = db_list[db_list.loc[:,'update']==True]
     
     for a_df_name in df_daily.index:
-        if last_update_db.loc[a_df_name, 'delta_day'] > 1:
+        if last_update_db.loc[a_df_name, 'delta_day'] > limit:
             print(f"Downloading {df_daily.loc[a_df_name, 'file_name']}...", end='')
             import_and_save(a_df_name, raw_data_dir, df_daily)
             print(f"\r{df_daily.loc[a_df_name, 'file_name']} was downloaded")
@@ -111,7 +111,7 @@ def get_dates (data_dir, db_list, last_update):
     last_update.loc["Fra_Testing1", 'date'] = df.index[-1]+datetime.timedelta(days=2)
     
     path = os.path.normcase(f'{data_dir}/raw{db_list.loc["Fra_Vax", "sub_dir"]}/{db_list.loc["Fra_Vax", "file_name"]}')
-    df = pandas.read_csv(path).set_index('date')
+    df = pandas.read_csv(path).set_index('jour')
     df.index = pandas.to_datetime(df.index, format='%Y-%m-%d')
     df = df.sort_index()
     last_update.loc["Fra_Vax", 'date'] = df.index[-1]
@@ -121,14 +121,17 @@ def get_dates (data_dir, db_list, last_update):
     last_update.loc[:,'date'] = last_update.apply(lambda x: x["date"].strftime("%Y-%m-%d"), axis=1)
     last_update.to_json(f'{data_dir}/last_update.json', orient = "table", indent=4)
 
-
-if __name__ == '__main__':
+def main(update_limit):
     data_dir = file_fct.get_parent_dir(2, 'data') # .../COVID19/data
     db_list = df_fct.read_db_list ('raw')
     last_update = last_update_db (data_dir, db_list)
     
     import_static (data_dir, db_list)
-    import_daily (data_dir, db_list, last_update)
+    import_daily (data_dir, db_list, last_update, update_limit)
     
     get_dates (data_dir, db_list, last_update)
+
+
+if __name__ == '__main__':
+    main(1)
 
