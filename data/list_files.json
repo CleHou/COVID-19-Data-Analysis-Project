@@ -69,7 +69,7 @@
         {
             "index":"world_delta",
             "local_path":"reports\/general_graph\/Countries\/World\/PDF",
-            "local_path_prev":"reports\/general_graph\/4_countries\/Countries\/World\/png",
+            "local_path_prev":"reports\/general_graph\/Countries\/World\/png",
             "ftp_path":"\/www\/wp-content\/uploads\/Graphs",
             "pref":"world_delta_",
             "suf":"",
