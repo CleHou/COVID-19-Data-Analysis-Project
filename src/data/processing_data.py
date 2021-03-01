@@ -59,7 +59,7 @@ class WorldDataSet:
             self.df_world.loc['World'] = self.df_world.sum(level='date').values
     
     def backup_fra (self, last_date_world):
-        backup_df = pandas.read_csv('https://github.com/CleHou/COVID-19-Data-Analysis-Project/raw/master/01-Graph/France_data.csv')
+        backup_df = pandas.read_csv('https://raw.githubusercontent.com/CleHou/COVID-19-Data-Analysis-Project/backend_2.0/data/raw/covid_data/fra/backupcases.csv')
         backup_df = backup_df.set_index('Date')
         backup_df.loc[:,'Cases'] = pandas.to_numeric(backup_df.loc[:,'Cases'], downcast='float')
         backup_df.index = pandas.to_datetime(backup_df.index)
