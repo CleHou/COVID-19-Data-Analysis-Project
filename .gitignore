@@ -175,5 +175,5 @@ data/processed/covid_data/us/us_testing.json
 data/processed/gen_data/us_pop.json
 data/raw/covid_data/fra/fra_vax.csv
 .env
-.env
 *.geojson
+reports
