@@ -181,7 +181,9 @@ class FrenchDataSets:
         
     def update_backup(self):
         day_after = self.df_fra_backup.index[-1] + pandas.Timedelta(1, unit='d')
-        self.df_fra_backup = pandas.concat([self.df_fra_backup.loc[:,['cases']], self.df_fra_nat.loc[day_after:,['cases']]]) 
+        self.df_fra_backup = pandas.concat([self.df_fra_backup.loc[:,['cases']], self.df_fra_nat.loc[day_after:,['cases']]])
+        df_fct.export_df([['Fra_Backup', self.df_fra_backup]],
+                         ['raw'])
         
     def clean_up_reg (self):
         self.df_fra_reg = self.df_fra[(self.df_fra.loc[:,'granularite']=='region') & (self.df_fra.loc[:,'source_type']=='opencovid19-fr')]

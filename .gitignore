@@ -189,3 +189,4 @@ update.bash
 map.html
 data/processed/covid_data/fra/fra_indic_dpt_graph.json
 data/raw/covid_data/fra/fra_gendata2.csv
+data/processed/covid_data/fra/fra_backup.json
