@@ -76,7 +76,7 @@ class PlotIndic:
         long_date = self.plotting_dates[-1].strftime("%d %B, %Y")
         short_date = self.plotting_dates[-1].strftime("%Y-%m-%d")
         
-        new_df = self.french_indic_nat.loc[self.plotting_dates[0]:self.plotting_dates[-1]]
+        new_df = self.french_indic_nat.loc[self.plotting_dates[0]:self.plotting_dates[-1]].copy()
         
         fig, axs = plt.subplots(2,2, figsize=self.fig_size, num=f'Indicateurs français {short_date}')                             
         
@@ -91,7 +91,7 @@ class PlotIndic:
         
         list_fig = [self.preview()]
         
-        for a_dpt in tqdm.tqdm(self.french_indic_dpt.index.get_level_values('departement').unique()):
+        for a_dpt in tqdm.tqdm(self.french_indic_dpt.index.get_level_values('departement').unique(), desc='France_Indic_Dpt'):
             fig, axs = plt.subplots(2,2, figsize=self.fig_size, num=f'Indicateurs français {short_date} {a_dpt}')
             new_df = self.french_indic_dpt.loc[(slice(None), slice(self.plotting_dates[0],self.plotting_dates[-1])),:]
             new_df = new_df.loc[a_dpt]
@@ -101,6 +101,7 @@ class PlotIndic:
             
             fig.suptitle(f"French data for {a_dpt}-{new_df.loc[:,'libelle_dep'].iloc[-1]} on\n{long_date}", size=16)
             list_fig.append(fig)
+            plt.close(fig)
             
         file_fct.save_multi_fig (list_fig, 'France_Indic_Dpt', self.plotting_dates[-1])  
         
@@ -279,7 +280,6 @@ class MapIndic:
                 
         text = hv.Curve((0, 0)).opts(xaxis=None, yaxis=None) * hv.Text(0, 0, 'Source: Santé Publique France\nGraph: C.Houzard')
         MapOutput = (geoviews.Layout(sum_map + text)).cols(1)
-        print('save')
         renderer = hv.renderer('bokeh')
         renderer.save(MapOutput, os.path.normcase(f'map'))
         #file_fct.save_fig (MapOutput, 'Map_France_Indic', self.date_final)
@@ -373,6 +373,6 @@ def mapping_indic ():
     
 if __name__ == '__main__':
     fig_size = (14,7)
-    #plotting_indic_nat('color', 21, fig_size)
-    plotting_indic_dpt('color', 21, fig_size)
+    plotting_indic_nat('color', 21, fig_size)
+    #plotting_indic_dpt('color', 21, fig_size)
     #mapping_indic()

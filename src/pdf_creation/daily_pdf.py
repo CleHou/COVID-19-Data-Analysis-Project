@@ -116,6 +116,7 @@ class merging_pdf:
         
         
     def main (self):
+        print('*** Generating daily brief ***\n\n')
         full_path = self.fill_template()
         self.merging_pdf(full_path)
  

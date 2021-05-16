@@ -146,15 +146,15 @@ class FrenchDataSets:
             #self.df_fra_nat = df_sort_1.set_index('date')
             #self.df_fra_nat.index = pandas.to_datetime(self.df_fra_nat.index, format='%Y-%m-%d')
             self.df_fra_nat = df_sort_1.sort_index()
-            print(self.df_fra_nat)
+            #print(self.df_fra_nat)
             self.df_fra_nat = self.df_fra_nat.loc[:, ['cas_confirmes', 'deces', 'reanimation', 'hospitalises']]
             self.df_fra_nat = self.df_fra_nat.rename(columns={'cas_confirmes':'cases', 'deces':'death'})
             
             if source_max == 0: #Max from df_fra_nat
-                print(self.df_fra_nat.index[0], self.df_fra_2.index[0])
+                #print(self.df_fra_nat.index[0], self.df_fra_2.index[0])
                 if self.df_fra_nat.index[0] < self.df_fra_2.index[0]: #Min from df_fra_nat
                     self.df_fra_nat_complete = df_sort_2.sort_index()
-                    print(self.df_fra_nat_complete['cas_confirmes'])
+                    #print(self.df_fra_nat_complete['cas_confirmes'])
                     
                     self.df_fra_nat.loc[self.df_fra_nat.index[0]:self.df_fra_2.index[0],['cases']] = self.df_fra_nat_complete.loc[self.df_fra_nat.index[0]:self.df_fra_2.index[0],['cas_confirmes']].values
                     self.df_fra_nat.loc[self.df_fra_2.index[0]:self.df_fra_nat.index[-1],['cases']] = self.df_fra_2.loc[self.df_fra_2.index[0]:self.df_fra_nat.index[-1],['conf']].values
@@ -186,7 +186,7 @@ class FrenchDataSets:
                          ['raw'])
         
     def clean_up_reg (self):
-        self.df_fra_reg = self.df_fra[(self.df_fra.loc[:,'granularite']=='region') & (self.df_fra.loc[:,'source_type']=='opencovid19-fr')]
+        self.df_fra_reg = self.df_fra[(self.df_fra.loc[:,'granularite']=='region') & (self.df_fra.loc[:,'source_type']=='opencovid19-fr')].copy()
         self.df_fra_reg.loc[:,'date'] = pandas.to_datetime(self.df_fra_reg.loc[:,'date'], format='%Y-%m-%d')
         self.df_fra_reg = self.df_fra_reg.set_index(['maille_nom', 'date']).sort_index()
         self.df_fra_reg.index = self.df_fra_reg.index.rename(['region', 'date'])
@@ -195,7 +195,7 @@ class FrenchDataSets:
         self.df_fra_reg = self.add_para ('df_fra_reg', 'region')
         
     def clean_up_dpt (self):    
-        self.df_fra_dpt = self.df_fra[(self.df_fra.loc[:,'granularite']=='departement') & (self.df_fra.loc[:,'source_type']=='sante-publique-france-data')]
+        self.df_fra_dpt = self.df_fra[(self.df_fra.loc[:,'granularite']=='departement') & (self.df_fra.loc[:,'source_type']=='sante-publique-france-data')].copy()
         self.df_fra_dpt.loc[:,'date'] = pandas.to_datetime(self.df_fra_dpt.loc[:,'date'], format='%Y-%m-%d')
         self.df_fra_dpt.loc[:,'maille_code'] = self.df_fra_dpt.loc[:,'maille_code'].apply(lambda dpt: dpt[4:])
         self.df_fra_dpt = self.df_fra_dpt.set_index(['maille_nom', 'date']).sort_index()
@@ -285,9 +285,11 @@ class FrenchVax ():
         days_to_targ = int(0.6 * 66 * 10**6 / dvdt)
         date_to_targ = self.data_vax.index[-1] + pandas.Timedelta(days_to_targ, unit='d')
         self.data_vax.loc[date_to_targ, 'vax journalier'] = 0.6 * 66 * 10**6
-        print(self.data_vax.loc[date_to_targ])
+        #print(self.data_vax.loc[date_to_targ])
+        
         
         print(self.data_vax)
+        print('\n\n')
         return self.data_vax
     
     def main(self):

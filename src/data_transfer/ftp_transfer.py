@@ -31,7 +31,7 @@ class FTPClass:
         
         ftp.login(user=user, passwd = password)
         etat = ftp.getwelcome()
-        print(etat)
+        print(f'\n\n{etat}')
     
         return ftp
     
@@ -52,7 +52,7 @@ class FTPClass:
 
     def disconnect (ftp):
         quitting = ftp.quit()
-        print('\n' + quitting)
+        print('\n' + quitting + '\n')
         
 class Transfer:
     def __init__ (self, ftp, list_file, type_transfer):
@@ -85,7 +85,7 @@ class Transfer:
         print('\n')
         print(self.db_file_date.loc[self.list_file])
         print(f'\n**** Upload type: {self.type_transfer} ****')
-        print(len(self.list_file), '\nfiles groups to transfer')
+        print(len(self.list_file), ' files groups to transfer\n')
         k=1
         tot_file = 0
         
@@ -146,7 +146,6 @@ class Transfer:
             
             k+=1
             
-        print('\n')
         print(f'* {tot_file} files transfered *')
 
 class LinkExport:
@@ -235,7 +234,7 @@ class LinkExport:
     def path_to_file (self):
         self.return_path()
         root = os.path.normcase(file_fct.get_parent_dir(2, 'src/data_transfer'))
-        print(root)
+        #print(root)
         
         if self.type_transfer == 'daily':
             file_path = os.path.normcase(f'{root}/export_file.txt')
@@ -251,7 +250,7 @@ class LinkExport:
                 export_file.write(a_name+'\n')
             
         export_file.close()
-        print('File saved')
+        #print('File saved')
 
         
 

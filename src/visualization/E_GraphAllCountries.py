@@ -144,6 +144,7 @@ class GraphAll:
             fig.text(0.83, 0.05, f'Source: John Hopkins University \nGraph: C.Houzard\nPage {page+1}/{num_pages}', fontsize=8)
             
             list_fig.append(fig)
+            plt.close(fig)
                 
         file_fct.save_multi_fig (list_fig, self.name_plot, self.plotting_dates[-1])
     
