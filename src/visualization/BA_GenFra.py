@@ -68,7 +68,7 @@ class PlotGenSituation():
             self.plotting_dates.append(pandas.to_datetime(plotting_dates[0]))
     
     def reprocessing (self):
-        self.french_df.loc[(self.french_df.delta_death<0),'delta_death']  = numpy.nan
+        self.french_df.loc[(self.french_df.delta_death<0),'delta_death'] = numpy.nan
         self.french_df = self.french_df.fillna(method='ffill')
         self.french_df = self.french_df.rolling(window = 7, center=False).mean()
     
