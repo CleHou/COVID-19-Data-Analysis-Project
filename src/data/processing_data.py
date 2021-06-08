@@ -536,7 +536,8 @@ class FrenchMapDataSet ():
         self.df_fra_dpt = pandas.DataFrame()
     
     def clean_up_FraShp (self):
-        self.Fra_Regions_shapefile = self.Fra_Regions_shapefile.set_index('region')
+        self.Fra_Regions_shapefile = self.Fra_Regions_shapefile.set_index('nom')
+        self.Fra_Regions_shapefile.index = self.Fra_Regions_shapefile.index.rename('region') 
         self.Fra_Regions_shapefile = self.Fra_Regions_shapefile.loc[:,'geometry']
         
         
@@ -571,9 +572,10 @@ class FrenchMapDataSet ():
         
 
 if __name__ == '__main__':
-    FrenchDataSets().main()
+    #FrenchDataSets().main()
     #df_fra_dpt_shpe= FrenchIndic().main()
     #df_vax = FrenchVax ().main()
+    FrenchMapDataSet().main()
     """
     df_world = WorldDataSet().main(7, False)
     df_us = USMapDataSet().main()
