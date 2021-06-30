@@ -72,6 +72,11 @@ class WorldDataSet:
     
     def smooth (self, period, center):
         self.df_world = self.df_world.rolling(window = period, center=center).mean()
+
+    def remove_neg_val (self):
+        for type_data in ['cases', 'death']:
+            self.df_fra_nat.loc[self.df_fra_nat[f'delta_{type_data}'] < 0,f'delta_{type_data}'] = numpy.nan
+        self.df_fra_nat = self.df_fra_nat.interpolate(method='linear')
             
     def main(self, period, center):
         self.import_db()
@@ -80,6 +85,7 @@ class WorldDataSet:
         self.ajust_values ()
         self.complete_data ()
         self.smooth (period, center)
+        self.remove_neg_val ()
         df_fct.export_df([['World_JH', self.df_world]], ['processed'])
         
         return self.df_world
@@ -174,18 +180,16 @@ class FrenchDataSets:
                     
         for type_data in ['cases', 'death']:
             self.df_fra_nat.loc[:,f'delta_{type_data}'] = self.df_fra_nat.loc[:,type_data].diff()
-            self.remove_neg_val ()
-            
             self.df_fra_nat.loc[:,f'growth_{type_data}'] = self.df_fra_nat.loc[:,type_data].pct_change()
             self.df_fra_nat.loc[:,f'weekly_growth_{type_data}'] = self.df_fra_nat.loc[:,type_data].pct_change(periods=7)
         
-        
+        self.remove_neg_val ()
         self.df_fra = self.df_fra.reset_index()
 
     def remove_neg_val (self):
         for type_data in ['cases', 'death']:
             self.df_fra_nat.loc[self.df_fra_nat[f'delta_{type_data}'] < 0,f'delta_{type_data}'] = numpy.nan
-            self.df_fra_nat = self.df_fra_nat.interpolate(method='linear')
+        self.df_fra_nat = self.df_fra_nat.interpolate(method='linear')
         
     def update_backup(self):
         day_after = self.df_fra_backup.index[-1] + pandas.Timedelta(1, unit='d')
