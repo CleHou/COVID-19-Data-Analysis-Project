@@ -75,8 +75,8 @@ class WorldDataSet:
 
     def remove_neg_val (self):
         for type_data in ['cases', 'death']:
-            self.df_fra_nat.loc[self.df_fra_nat[f'delta_{type_data}'] < 0,f'delta_{type_data}'] = numpy.nan
-        self.df_fra_nat = self.df_fra_nat.interpolate(method='linear')
+            self.df_world.loc[self.df_fra_nat[f'delta_{type_data}'] < 0,f'delta_{type_data}'] = numpy.nan
+        self.df_world = self.df_world.interpolate(method='linear')
             
     def main(self, period, center):
         self.import_db()
