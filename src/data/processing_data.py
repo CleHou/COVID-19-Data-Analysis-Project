@@ -174,10 +174,12 @@ class FrenchDataSets:
                     
         for type_data in ['cases', 'death']:
             self.df_fra_nat.loc[:,f'delta_{type_data}'] = self.df_fra_nat.loc[:,type_data].diff()
+            self.remove_neg_val ()
+            
             self.df_fra_nat.loc[:,f'growth_{type_data}'] = self.df_fra_nat.loc[:,type_data].pct_change()
             self.df_fra_nat.loc[:,f'weekly_growth_{type_data}'] = self.df_fra_nat.loc[:,type_data].pct_change(periods=7)
         
-        self.remove_neg_val ()
+        
         self.df_fra = self.df_fra.reset_index()
 
     def remove_neg_val (self):
