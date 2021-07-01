@@ -137,6 +137,7 @@ class FrenchDataSets:
 
         last_dates = numpy.array([self.df_fra_2.index[-1], df_sort_1.index[-1], df_sort_2.index[-1]])
         source_max = numpy.argmax(last_dates)
+        print(source_max)
 
         if source_max == 2:
             #self.df_fra_nat = df_sort_2.set_index('date')
