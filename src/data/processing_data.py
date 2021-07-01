@@ -135,7 +135,7 @@ class FrenchDataSets:
         df_sort_1 = self.df_fra[(self.df_fra.loc[:,'granularite']=='pays') & (self.df_fra.loc[:,'source_type']=='opencovid19-fr')] #Gives us the last date where data available
         df_sort_2 = self.df_fra[(self.df_fra.loc[:,'granularite']=='pays') & (self.df_fra.loc[:,'source_type']=='ministere-sante')] #Original source for cases
 
-        last_dates = numpy.array([self.df_fra_2.index[-1], df_sort_1.index[-1], df_sort_2.index[-1]], df_fra_backup.index[-1])
+        last_dates = numpy.array([self.df_fra_2.index[-1], df_sort_1.index[-1], df_sort_2.index[-1]], self.df_fra_backup.index[-1])
         source_max = numpy.argmax(last_dates)
         print(source_max)
 
