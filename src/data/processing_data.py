@@ -135,9 +135,10 @@ class FrenchDataSets:
         df_sort_1 = self.df_fra[(self.df_fra.loc[:,'granularite']=='pays') & (self.df_fra.loc[:,'source_type']=='opencovid19-fr')] #Gives us the last date where data available
         df_sort_2 = self.df_fra[(self.df_fra.loc[:,'granularite']=='pays') & (self.df_fra.loc[:,'source_type']=='ministere-sante')] #Original source for cases
 
-        last_dates = numpy.array([self.df_fra_2.index[-1], df_sort_1.index[-1], df_sort_2.index[-1]], self.df_fra_backup.index[-1])
+        last_dates = numpy.array([self.df_fra_2.index[-1], df_sort_1.index[-1], df_sort_2.index[-1], self.df_fra_backup.index[-1]])
         source_max = numpy.argmax(last_dates)
         print(source_max)
+        print(last_dates)
 
         if source_max == 2:
             #self.df_fra_nat = df_sort_2.set_index('date')
@@ -150,21 +151,17 @@ class FrenchDataSets:
             self.update_backup()
 
         else:
-            #self.df_fra_nat = df_sort_1.set_index('date')
-            #self.df_fra_nat.index = pandas.to_datetime(self.df_fra_nat.index, format='%Y-%m-%d')
             self.df_fra_nat = df_sort_1.sort_index()
-            #print(self.df_fra_nat)
             self.df_fra_nat = self.df_fra_nat.loc[:, ['cas_confirmes', 'deces', 'reanimation', 'hospitalises']]
             self.df_fra_nat = self.df_fra_nat.rename(columns={'cas_confirmes':'cases', 'deces':'death'})
             
             if source_max == 0: #Max from df_fra_nat
-                #print(self.df_fra_nat.index[0], self.df_fra_2.index[0])
+                
                 if self.df_fra_nat.index[0] < self.df_fra_2.index[0]: #Min from df_fra_nat
                     self.df_fra_nat_complete = df_sort_2.sort_index()
-                    #print(self.df_fra_nat_complete['cas_confirmes'])
                     
                     self.df_fra_nat.loc[self.df_fra_nat.index[0]:self.df_fra_2.index[0],['cases']] = self.df_fra_nat_complete.loc[self.df_fra_nat.index[0]:self.df_fra_2.index[0],['cas_confirmes']].values
-                    self.df_fra_nat.loc[self.df_fra_2.index[0]:self.df_fra_nat.index[-1],['cases']] = self.df_fra_2.loc[self.df_fra_2.index[0]:self.df_fra_nat.index[-1],['conf']].values
+                    self.df_fra_nat.loc[self.df_fra_2.index[0]: self.df_fra_nat.index[-1],['cases']] = self.df_fra_2.loc[self.df_fra_2.index[0]:self.df_fra_nat.index[-1],['conf']].values
                    
                 else: #Min from df_fra_2
                     self.df_fra_nat.loc[self.df_fra_nat.index[0]:self.df_fra_nat.index[-1],['cases']] = self.df_fra_2.loc[self.df_fra_nat.index[0]:self.df_fra_nat.index[-1],['conf']].values
@@ -186,6 +183,7 @@ class FrenchDataSets:
         
         self.remove_neg_val ()
         self.df_fra = self.df_fra.reset_index()
+        print(self.df_fra_nat)
 
     def remove_neg_val (self):
         for type_data in ['cases', 'death']:
