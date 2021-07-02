@@ -165,6 +165,8 @@ class FrenchDataSets:
                    
                 else: #Min from df_fra_2
                     self.df_fra_nat.loc[self.df_fra_nat.index[0]:self.df_fra_nat.index[-1],['cases']] = self.df_fra_2.loc[self.df_fra_nat.index[0]:self.df_fra_nat.index[-1],['conf']].values
+                    
+                    
                 
                 self.update_backup()  
 
