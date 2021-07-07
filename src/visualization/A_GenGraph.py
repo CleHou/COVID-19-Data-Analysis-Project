@@ -404,14 +404,14 @@ def main_gen_graph (type_color, intv, fig_size):
     prop_df_global = pandas.DataFrame(index=['France', 'US', 'Italy', 'Germany'],
                              columns=['Reg_cases', 'Reg_death','Date_cases', 'Date_death', 'growth', 'delta'],
                              data=[[False, False, [[numpy.nan, numpy.nan]], [[numpy.nan, numpy.nan]], True, True] for k in range (4)])
-    plotting_dates_global = ['2020-03-25', 'last']
+    plotting_dates_global = ['2020-03-31', 'last']
     result_reg = LinearRegression(prop_df_global, [20,7]).main()
     GeneralSituationGraph(prop_df_global, plotting_dates_global, cycle, intv, result_reg, fig_size).main()
     
     prop_df_world = pandas.DataFrame(index=['World'],
                              columns=['Reg_cases', 'Reg_death','Date_cases', 'Date_death', 'growth', 'delta'],
                              data=[[False, False, [[]], [[]], False, True]])
-    plotting_dates_world = ['2020-03-25', 'last']
+    plotting_dates_world = ['2020-03-31', 'last']
     result_reg = LinearRegression(prop_df_world, [20,7]).main()
     GeneralSituationGraph(prop_df_world, plotting_dates_world, cycle, intv, result_reg, fig_size).main()
     
