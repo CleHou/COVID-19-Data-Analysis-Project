@@ -75,7 +75,8 @@ class WorldDataSet:
 
     def remove_neg_val (self):
         for type_data in ['cases', 'death']:
-            self.df_world.loc[self.df_world[f'delta_{type_data}'] < 0,f'delta_{type_data}'] = numpy.nan
+            for type_indic in ['delta', 'growth']: 
+                self.df_world.loc[self.df_world[f'{type_indic}_{type_data}'] < 0,f'{type_indic}_{type_data}'] = numpy.nan
         self.df_world = self.df_world.interpolate(method='linear')
             
     def main(self, period, center):
@@ -189,7 +190,8 @@ class FrenchDataSets:
 
     def remove_neg_val (self):
         for type_data in ['cases', 'death']:
-            self.df_fra_nat.loc[self.df_fra_nat[f'delta_{type_data}'] < 0,f'delta_{type_data}'] = numpy.nan
+            for type_indic in ['delta', 'growth']: 
+                self.df_fra_nat.loc[self.df_fra_nat[f'{type_indic}_{type_data}'] < 0,f'{type_indic}_{type_data}'] = numpy.nan
         self.df_fra_nat = self.df_fra_nat.interpolate(method='linear')
         
     def update_backup(self):
@@ -589,8 +591,9 @@ if __name__ == '__main__':
     #df_fra_dpt_shpe= FrenchIndic().main()
     #df_vax = FrenchVax ().main()
     #FrenchMapDataSet().main()
-    """
+
     df_world = WorldDataSet().main(7, False)
+    """
     df_us = USMapDataSet().main()
     df_fra = FrenchMapDataSet().main()
     df_vax = FrenchVax ().main()
