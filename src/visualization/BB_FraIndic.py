@@ -281,8 +281,8 @@ class MapIndic:
         text = hv.Curve((0, 0)).opts(xaxis=None, yaxis=None) * hv.Text(0, 0, 'Source: Santé Publique France\nGraph: C.Houzard')
         MapOutput = (geoviews.Layout(sum_map + text)).cols(1)
         renderer = hv.renderer('bokeh')
-        renderer.save(MapOutput, os.path.normcase(f'map'))
-        #file_fct.save_fig (MapOutput, 'Map_France_Indic', self.date_final)
+        #renderer.save(MapOutput, os.path.normcase(f'map'))
+        file_fct.save_fig (MapOutput, 'Map_France_Indic', self.date_final)
         
     def creation_cmap (self, indicateur_dpt_plot, an_indic):
         len_cmap = 100
