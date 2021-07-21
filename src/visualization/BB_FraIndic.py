@@ -373,6 +373,6 @@ def mapping_indic ():
     
 if __name__ == '__main__':
     fig_size = (14,7)
-    plotting_indic_nat('color', 21, fig_size)
+    #plotting_indic_nat('color', 21, fig_size)
     #plotting_indic_dpt('color', 21, fig_size)
-    #mapping_indic()
+    mapping_indic()
