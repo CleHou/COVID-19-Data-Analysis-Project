@@ -252,6 +252,28 @@
             "add_date":true,
             "type_file":"Graph",
             "preview":true
+        },
+        {
+            "index":"Portugal_delta",
+            "local_path":"reports\/general_graph\/Countries\/Portugal\/PDF",
+            "local_path_prev":"reports\/general_graph\/Countries\/Portugal\/png",
+            "ftp_path":"\/www\/wp-content\/uploads\/Graphs",
+            "pref":"Portugal_delta_",
+            "suf":"",
+            "add_date":true,
+            "type_file":"Graph",
+            "preview":true
+        },
+        {
+            "index":"Portugal_growth",
+            "local_path":"reports\/general_graph\/Countries\/Portugal\/PDF",
+            "local_path_prev":"reports\/general_graph\/Countries\/Portugal\/png",
+            "ftp_path":"\/www\/wp-content\/uploads\/Graphs",
+            "pref":"Portugal_growth_",
+            "suf":"",
+            "add_date":true,
+            "type_file":"Graph",
+            "preview":true
         }
     ]
 }

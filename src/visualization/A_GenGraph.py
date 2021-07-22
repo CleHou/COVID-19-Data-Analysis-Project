@@ -296,7 +296,7 @@ class GeneralSituationGraph ():
                     pref=f'{self.list_countries[-1]}_growth_'
 
                 file_fct.save_fig (fig, f'{self.list_countries[-1]}_{layout}', self.plotting_dates[1], local_path=local_path, local_path_prev=local_path_prev,
-                          ftp_path=ftp_path, pref=pref, suf='', add_date=True, type_file='Graph')
+                          ftp_path=ftp_path, pref=pref, suf='', add_date=True, type_file='Graph', preview=True)
         
         #plt.show()
         
@@ -421,6 +421,16 @@ def main_gen_graph (type_color, intv, fig_size):
     plotting_dates_fra = ['2020-06-05', 'last']
     result_reg = LinearRegression(prop_df_fra, [20,7]).main()
     GeneralSituationGraph(prop_df_fra, plotting_dates_fra, cycle, intv-7, result_reg, fig_size).main()
+    
+def extra_country (type_color, intv, fig_size):
+    cycle = Cycler(type_color, 'general').main()
+    
+    prop_df_global = pandas.DataFrame(index=['Portugal'],
+                             columns=['Reg_cases', 'Reg_death','Date_cases', 'Date_death', 'growth', 'delta'],
+                             data=[[False, False, [[numpy.nan, numpy.nan]], [[numpy.nan, numpy.nan]], True, True] for k in range (1)])
+    plotting_dates_global = ['2020-06-15', 'last']
+    result_reg = LinearRegression(prop_df_global, [20,7]).main()
+    GeneralSituationGraph(prop_df_global, plotting_dates_global, cycle, intv, result_reg, fig_size).main()
 
 def main_stack_graph (type_color, intv, fig_size):
     list_countries = ['United Kingdom', 'Italy', 'Spain', 'France', 'US']
@@ -430,8 +440,9 @@ def main_stack_graph (type_color, intv, fig_size):
 
 if __name__ == '__main__':
     fig_size = (14,7)
-    main_gen_graph ('color', 28, fig_size)
-    main_stack_graph ('color', 28, fig_size)
+    #main_gen_graph ('color', 28, fig_size)
+    #main_stack_graph ('color', 28, fig_size)
+    extra_country ('color', 28, fig_size)
     
 
 

@@ -112,7 +112,8 @@ def write_db_files (file, date, files_para):
     if files_para.get('file', file) not in db_file.index:
         db_file.loc[files_para.get('file', file)] = [files_para['local_path'], files_para['local_path_prev'], files_para['ftp_path'],
                                                      files_para['pref'], files_para['suf'],
-                                                     files_para['add_date'], files_para['type_file']]
+                                                     files_para['add_date'], files_para['type_file'],
+                                                     files_para['preview']]
 
     db_file_date.loc[files_para.get('file', file), 'date'] = files_para.get('date', date)
 
