@@ -9,9 +9,7 @@ Created on Sat Jan  10 13:25:01 2021
 import os 
 import numpy
 import pandas
-#%%
 import geopandas as gpd
-#%%
 from gen_fct import file_fct
 
 def read_db_list (type):

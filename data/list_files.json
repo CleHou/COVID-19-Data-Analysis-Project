@@ -274,6 +274,17 @@
             "add_date":true,
             "type_file":"Graph",
             "preview":true
+        },
+        {
+            "index":"daily_brief",
+            "local_path":"reports\/Daily_PDF",
+            "local_path_prev":"",
+            "ftp_path":"\/www\/wp-content\/uploads\/Graphs",
+            "pref":"PDF_report_",
+            "suf":"",
+            "add_date":true,
+            "type_file":"Graph",
+            "preview":false
         }
     ]
 }

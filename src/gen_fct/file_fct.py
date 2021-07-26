@@ -126,20 +126,26 @@ def save_multi_fig (list_objects, name, date, **kwargs):
 
     df_fct.save_db_files (db_file, db_file_date)
 
-def save_pdf (pdf_object, date):
+def save_pdf (pdf_object, date, **kwargs):
+    name = 'daily_brief'
+    db_file, db_file_date = df_fct.write_db_files (name, date, kwargs)
+    
     date_str = date.strftime("%Y-%m-%d")
     year = date.strftime("%Y")
     month = date.strftime("%m - %B")
 
-    file_dir = f"{get_parent_dir(2)}reports/Daily_PDF/{year}/{month}"
-    file_name = f"PDF_report_{date_str}.pdf"
+    file_dir = f"{get_parent_dir(2)}/{db_file.loc[name, 'local_path']}/{year}/{month}"
+    file_name = f"{db_file.loc[name, 'pref']}{date_str}{db_file.loc[name, 'suf']}"
     
     creation_folder ('', [file_dir])
-    full_path = os.path.normcase(f'{file_dir}/{file_name}')
+    full_path = os.path.normcase(f'{file_dir}/{file_name}.pdf')
 
     pdf_output = open(full_path, 'wb')
     pdf_object.write(pdf_output)
     pdf_output.close()
+    
+    df_fct.save_db_files (db_file, db_file_date)
+    
 
     print('Daily brief saved')
 

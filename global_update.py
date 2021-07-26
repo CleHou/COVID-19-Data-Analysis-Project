@@ -54,12 +54,15 @@ F_Testing.plot_testing_fra(type_coloring, days, fig_size)
 
 list_files = ["4_countries_delta", "4_countries_growth", "world_delta", "world_growth", "stack_plot", "France_delta", "France_growth",
               "France_Gen_Situation", "France_Indic_Nat", "Map_France_Indic", "Map_France_Prev_tx_incid", "Map_France_Prev_R", "Map_France_Prev_taux_occupation_sae",
-              "Map_France_Prev_tx_pos", "French_Vax", "US_Testing", "France_Testing", "All countries", "France_Indic_Dpt", "Portugal_delta", "Portugal_growth",
+              "Map_France_Prev_tx_pos", "French_Vax", "US_Testing", "France_Testing", "All countries", "France_Indic_Dpt",
+              "Portugal_delta", "Portugal_growth", "daily_brief"
               ]
+
+daily_pdf.merging_pdf(list_files[:-4]).main()
 
 ftp_transfer.upload(list_files, 'daily')
 ftp_transfer.LinkExport(list_files, 'daily').path_to_file()
 
-daily_pdf.merging_pdf(list_files[:-3]).main()
+
 
 

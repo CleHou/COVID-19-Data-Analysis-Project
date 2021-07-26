@@ -35,3 +35,5 @@ https://houzardc.fr/wp-content/uploads/Graphs/Portugal_delta.pdf
 https://houzardc.fr/wp-content/uploads/Graphs/Portugal_delta_preview.png
 https://houzardc.fr/wp-content/uploads/Graphs/Portugal_growth.pdf
 https://houzardc.fr/wp-content/uploads/Graphs/Portugal_growth_preview.png
+https://houzardc.fr/wp-content/uploads/Graphs/daily_brief.pdf
+https://houzardc.fr/wp-content/uploads/Graphs/.png
