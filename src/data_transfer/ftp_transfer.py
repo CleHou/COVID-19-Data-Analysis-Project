@@ -260,13 +260,16 @@ def upload (list_files, transfer_type):
     Transfer(ftp, list_files, transfer_type).transfer()
 
     FTPClass.disconnect(ftp)
+
+def files_path (list_files, type_up):
+    files = LinkExport(list_files, type_up)
+    files.path_to_file()
     
 if __name__ == '__main__':
     list_files = ["4_countries_delta", "4_countries_growth", "world_delta", "world_growth", "stack_plot", "France_delta", "France_growth",
               "France_Gen_Situation", "France_Indic_Nat", "Map_France_Indic", "Map_France_Prev_tx_incid", "Map_France_Prev_R", "Map_France_Prev_taux_occupation_sae",
               "Map_France_Prev_tx_pos", "French_Vax", "US_Testing", "France_Testing", "All countries"]
-    upload (list_files, 'daily')
-    files = LinkExport(list_files, 'daily')
-    files.path_to_file()
+    #upload (list_files, 'daily')
+    files_path(list_files, 'daily')
 
 

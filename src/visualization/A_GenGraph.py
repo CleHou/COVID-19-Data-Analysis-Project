@@ -422,6 +422,15 @@ def main_gen_graph (type_color, intv, fig_size):
     result_reg = LinearRegression(prop_df_fra, [20,7]).main()
     GeneralSituationGraph(prop_df_fra, plotting_dates_fra, cycle, intv-7, result_reg, fig_size).main()
     
+    extra_country(type_color, intv, fig_size)
+    
+
+def main_stack_graph (type_color, intv, fig_size):
+    list_countries = ['United Kingdom', 'Italy', 'Spain', 'France', 'US']
+    plotting_dates_global = ['2020-03-25', 'last']
+    cycle = Cycler(type_color, 'stack').main()
+    StackGraph(cycle, list_countries, plotting_dates_global, intv, fig_size).main()
+    
 def extra_country (type_color, intv, fig_size):
     cycle = Cycler(type_color, 'general').main()
     
@@ -431,12 +440,6 @@ def extra_country (type_color, intv, fig_size):
     plotting_dates_global = ['2020-06-15', 'last']
     result_reg = LinearRegression(prop_df_global, [20,7]).main()
     GeneralSituationGraph(prop_df_global, plotting_dates_global, cycle, intv, result_reg, fig_size).main()
-
-def main_stack_graph (type_color, intv, fig_size):
-    list_countries = ['United Kingdom', 'Italy', 'Spain', 'France', 'US']
-    plotting_dates_global = ['2020-03-25', 'last']
-    cycle = Cycler(type_color, 'stack').main()
-    StackGraph(cycle, list_countries, plotting_dates_global, intv, fig_size).main()
 
 if __name__ == '__main__':
     fig_size = (14,7)
