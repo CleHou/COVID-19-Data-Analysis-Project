@@ -296,8 +296,13 @@ class MapIndic:
         D3 = val_max-self.parameter_prev.loc[an_indic].iloc[2]
     
         list_values = []
+        
         for cmap_name, delta in zip(self.list_cmap, [D1, D2, D3]):
             length = int(delta * len_cmap)
+            
+            if length == 0: #added condition because when delta<1, length=1
+                length = 1
+            
             cmap = cm.get_cmap(cmap_name, length)
             values = cmap(range(length))
             list_values.append(values)
@@ -331,7 +336,7 @@ class MapIndic:
             file_fct.save_fig (MapRel_tot, f'Map_France_Prev_{an_indic}', self.date_final)
             
     def main(self):
-        self.map_indicators()
+        #self.map_indicators()
         self.map_preview()
 
     
