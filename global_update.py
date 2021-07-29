@@ -58,7 +58,7 @@ list_files = ["4_countries_delta", "4_countries_growth", "world_delta", "world_g
               "Portugal_delta", "Portugal_growth", "daily_brief"
               ]
 
-daily_pdf.merging_pdf(list_files[:-4]).main()
+daily_pdf.merging_pdf(list_files[:-3]).main()
 
 ftp_transfer.upload(list_files, 'daily')
 ftp_transfer.LinkExport(list_files, 'daily').path_to_file()
