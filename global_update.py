@@ -21,8 +21,8 @@ from src.pdf_creation import daily_pdf
 
 type_coloring = 'color' #bw
 fig_size = (14, 7)
-fig_size_A4 = (11.7, 8.3)
-days = 7*5
+fig_size_A4 = (14, 9.9)
+days = 7*6
 
 data_import.main(1)
 
