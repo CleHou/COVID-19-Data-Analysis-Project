@@ -17,12 +17,15 @@ from src.visualization import E_GraphAllCountries
 from src.visualization import F_Testing
 
 from src.data_transfer import ftp_transfer
+from src.data_transfer import internet_co
 from src.pdf_creation import daily_pdf
 
 type_coloring = 'color' #bw
 fig_size = (14, 7)
 fig_size_A4 = (14, 9.9)
 days = 7*6
+
+internet_co.check_internet(10)
 
 data_import.main(1)
 
