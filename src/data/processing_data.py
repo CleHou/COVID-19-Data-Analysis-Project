@@ -162,9 +162,6 @@ class FrenchDataSets:
                     self.df_fra_nat.loc[self.df_fra_nat.index[0]:self.df_fra_2.index[0],['cases']] = self.df_fra_nat_complete.loc[self.df_fra_nat.index[0]:self.df_fra_2.index[0],['cas_confirmes']].values
                     self.df_fra_nat.loc[self.df_fra_2.index[0]: self.df_fra_nat.index[-1],['cases']] = self.df_fra_2.loc[self.df_fra_2.index[0]:self.df_fra_nat.index[-1],['conf']].values
                    
-                    self.df_fra_nat.loc[self.df_fra_nat.index[0]:self.df_fra_2.index[0],['death']] = self.df_fra_nat_complete.loc[self.df_fra_nat.index[0]:self.df_fra_2.index[0],['deces']].values
-                    self.df_fra_nat.loc[self.df_fra_2.index[0]: self.df_fra_nat.index[-1],['death']] = self.df_fra_2.loc[self.df_fra_2.index[0]:self.df_fra_nat.index[-1],['dc_tot']].values
-                   
                 else: #Min from df_fra_2
                     self.df_fra_nat.loc[self.df_fra_nat.index[0]:self.df_fra_nat.index[-1],['cases']] = self.df_fra_2.loc[self.df_fra_nat.index[0]:self.df_fra_nat.index[-1],['conf']].values
                     
@@ -174,7 +171,8 @@ class FrenchDataSets:
 
             elif source_max == 3:
                 if self.df_fra_backup.index[-1] < self.df_fra_nat.index[-1]:
-                    raise ValueError(f'Source data and backup data for France ({self.df_fra_backup.index[-1].strftime("%d-%m-%Y")}) not available')
+                    print('DATA NOT UP TO DATE')
+                    #raise ValueError(f'Source data and backup data for France ({self.df_fra_backup.index[-1].strftime("%d-%m-%Y")}) not available')
                 
                 else:
                     print('Using backup data')
