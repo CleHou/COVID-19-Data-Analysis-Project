@@ -171,8 +171,7 @@ class FrenchDataSets:
 
             elif source_max == 3:
                 if self.df_fra_backup.index[-1] < self.df_fra_nat.index[-1]:
-                    print('DATA NOT UP TO DATE')
-                    #raise ValueError(f'Source data and backup data for France ({self.df_fra_backup.index[-1].strftime("%d-%m-%Y")}) not available')
+                    raise ValueError(f'Source data and backup data for France ({self.df_fra_backup.index[-1].strftime("%d-%m-%Y")}) not available')
                 
                 else:
                     print('Using backup data')
