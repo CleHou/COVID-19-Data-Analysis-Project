@@ -94,6 +94,7 @@ class WorldDataSet:
 class FrenchDataSets:
     def __init__ (self):
         self.df_fra, self.df_fra_2, self.df_fra_backup = df_fct.import_df(['Fra_GenData', 'Fra_GenData2', 'Fra_Backup'],['raw', 'raw', 'raw'])
+        self.df_fra_test = df_fct.import_df(['Fra_Testing2'],['raw'])
         self.df_dpt_shp = df_fct.import_df(['Fra_Departements_shapefile'],['raw'])[0]
         self.df_fra_nat = pandas.DataFrame()
         self.df_fra_reg = pandas.DataFrame()
@@ -185,6 +186,20 @@ class FrenchDataSets:
         self.remove_neg_val ()
         self.df_fra = self.df_fra.reset_index()
         print(self.df_fra_nat)
+        
+    def clean_up_nat_v2 (self):
+        self.df_fra_nat_v2 = self.df_fra_test[0]
+        self.df_fra_nat_v2.loc['jour'] = pandas.to_datetime(self.df_fra_nat_v2['jour'], format='%Y-%m-%d')
+        self.df_fra_nat_v2 = self.df_fra_nat_v2[self.df_fra_nat_v2['cl_age90']==0]
+        self.df_fra_nat_v2 = self.df_fra_nat_v2.set_index(pandas.DatetimeIndex(self.df_fra_nat_v2['jour']))
+        self.df_fra_nat_v2 = self.df_fra_nat_v2[['P', 'T']]
+        self.df_fra_nat_v2.index = self.df_fra_nat_v2.index.rename('date')
+        self.df_fra_nat_v2 = self.df_fra_nat_v2.rename(columns={'P':'cases', 'T':'tests'})
+        
+        df_fct.export_df([['Fra_Nat_v2', self.df_fra_nat_v2], ],
+                         ['processed',])
+        
+        
 
     def remove_neg_val (self):
         for type_data in ['cases', 'death']:
@@ -585,12 +600,13 @@ class FrenchMapDataSet ():
         
 
 if __name__ == '__main__':
-    FrenchDataSets().main()
+    #FrenchDataSets().main()
+    FrenchDataSets().clean_up_nat_v2()
     #df_fra_dpt_shpe= FrenchIndic().main()
     #df_vax = FrenchVax ().main()
     #FrenchMapDataSet().main()
 
-    df_world = WorldDataSet().main(7, False)
+    #df_world = WorldDataSet().main(7, False)
     """
     df_us = USMapDataSet().main()
     df_fra = FrenchMapDataSet().main()

@@ -221,6 +221,17 @@
             "preview":true
         },
         {
+            "index":"French_SIR",
+            "local_path":"reports\/lab\/France\/PDF",
+            "local_path_prev":"reports\/lab\/France\/png",
+            "ftp_path":"\/www\/wp-content\/uploads\/Graphs",
+            "pref":"French_SIR_",
+            "suf":"",
+            "add_date":true,
+            "type_file":"Graph",
+            "preview":true
+        },
+        {
             "index":"US_Testing",
             "local_path":"reports\/US\/Testing\/PDF",
             "local_path_prev":"reports\/US\/Testing\/png",

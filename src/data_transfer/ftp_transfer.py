@@ -129,7 +129,7 @@ class Transfer:
             FTPClass.creation_folder_ftp(self.ftp, self.target_path)
             self.ftp.cwd(self.target_path)
             
-            print(f'Transfering {str(k).zfill(2)}/{len(self.list_file)}: {a_file}')
+            print(f'Transfering {str(k).zfill(len(self.list_file)//10+1)}/{len(self.list_file)}: {a_file}')
             
             self.binary_transfer(self.source_path, main_file, k, len(self.list_file))
             tot_file +=1
@@ -269,7 +269,9 @@ if __name__ == '__main__':
     list_files = ["4_countries_delta", "4_countries_growth", "world_delta", "world_growth", "stack_plot", "France_delta", "France_growth",
               "France_Gen_Situation", "France_Indic_Nat", "Map_France_Indic", "Map_France_Prev_tx_incid", "Map_France_Prev_R", "Map_France_Prev_taux_occupation_sae",
               "Map_France_Prev_tx_pos", "French_Vax", "US_Testing", "France_Testing", "All countries"]
-    #upload (list_files, 'daily')
+    list_files = ['French_SIR']
+    
+    upload (list_files, 'daily')
     files_path(list_files, 'daily')
 
 

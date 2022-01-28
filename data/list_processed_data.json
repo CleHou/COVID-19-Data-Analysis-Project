@@ -61,6 +61,15 @@
             "sep":","
         },
         {
+            "index":"Fra_Nat_v2",
+            "type":"Pandas",
+            "file_name":"fra_nat_v2.json",
+            "sub_dir":"/covid_data/fra",
+            "encoding":"utf-8",
+            "sep":","
+        },
+
+        {
             "index":"Fra_Reg",
             "type":"Pandas",
             "file_name":"fra_reg.json",
